@@ -46,7 +46,7 @@
 ## Usage
 ## Roadmap
 
-- [] make basic app
+- [ ] make basic app
 
 ## Contributing
 ## License
