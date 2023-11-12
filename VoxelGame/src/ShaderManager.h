@@ -9,7 +9,7 @@ class ShaderManager
 {
 private:
 	std::string shaderPath;
-
+	Shader* currentShader;
 	std::string getShaderName(std::string vertexFileName, std::string FragmentFileName);
 
 public:
@@ -18,6 +18,8 @@ public:
 	ShaderManager();
 
 	void CreateFromFiles(const char *vertexLocation, const char *fragmentLocation);
+
+	void UseShader(std::string shaderName);
 
 	void ClearShaderList();
 	~ShaderManager();

@@ -160,6 +160,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h" />
@@ -170,10 +171,7 @@
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\WindowManager.h" />
     <ClInclude Include="src\TextureManager.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\solid.frag" />
-    <None Include="Shaders\solid.vert" />
+    <ClInclude Include="src\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

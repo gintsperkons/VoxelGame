@@ -84,8 +84,9 @@ void Shader::CreateFromString(const char *vertexCode, const char *fragmentCode)
 	CompileShader(vertexCode, fragmentCode);
 }
 
-void Shader::CreateFromFiles(const char *vertexLocation, const char *fragmentLocation)
-{
+void Shader::CreateFromFiles(std::string shaderName,const char *vertexLocation, const char *fragmentLocation)
+{	
+	std::string name = shaderName;
 	std::string vertexString;
 	std::string fragmentString;
 	if (std::string(vertexLocation).find("internal>file") == std::string::npos)
@@ -114,12 +115,12 @@ unsigned int Shader::GetShaderID()
 	return shaderID;
 }
 
-void Shader::UseShader()
+void Shader::Use()
 {
 	glUseProgram(shaderID);
 }
 
-void Shader::ClearShader()
+void Shader::Clear()
 {
 	if (shaderID != 0)
 	{
@@ -133,5 +134,5 @@ void Shader::ClearShader()
 
 Shader::~Shader()
 {
-	ClearShader();
+	Clear();
 }

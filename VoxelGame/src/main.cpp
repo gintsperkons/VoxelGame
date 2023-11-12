@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "Objects/Mesh.h"
+#include "TextureManager.h"
 
 
 
@@ -15,10 +16,11 @@
 
 
 float vertices[] = {
-	 0.5f,  0.5f, 0.0f,  // top right
-	 0.5f, -0.5f, 0.0f,  // bottom right
-	-0.5f, -0.5f, 0.0f,  // bottom left
-	-0.5f,  0.5f, 0.0f   // top left 
+// positions          // colors           // texture coords
+ 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+ 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 };
 unsigned int indices[] = {  // note that we start from 0!
 	0, 1, 3,   // first triangle
@@ -32,16 +34,18 @@ std::vector<Mesh> meshList;
 
 
 int main()
-{	
+{
 	InputManager *inputManager = new InputManager();
 	WindowManager *windowManager = new WindowManager(inputManager);
 	ShaderManager *shaderManager = new ShaderManager();
+	TextureManager *textureManager = new TextureManager();
+
 	inputManager->Init();
 
 
 	Mesh m1 = Mesh();
 
-	m1.Create(vertices, indices, 12, 6);
+	m1.Create(vertices, indices, 32, 6);
 	meshList.push_back(m1);
 
 
@@ -68,7 +72,7 @@ int main()
 
 
 
-		
+
 		//Updates
 		inputManager->Update();
 		windowManager->Update();
@@ -76,24 +80,21 @@ int main()
 
 
 
-		//Render here
-		if (shaderManager->shaderList.find("solid") == shaderManager->shaderList.end())
-		{
-			shaderManager->shaderList["base"]->UseShader();
-		}
-		else
-		{
-			shaderManager->shaderList["solid"]->UseShader();
-		}
-
 		
+
+		shaderManager->UseShader("solid");
+
+
+		textureManager->UseTexture("default");
+
+
 
 
 		for (int i = 0; i < meshList.size(); i++)
 		{
 			meshList[i].Render();
 		}
-	
+
 		//Swap buffers
 		windowManager->SwapBuffers();
 		//Clear
@@ -105,6 +106,8 @@ int main()
 
 	delete windowManager;
 	delete inputManager;
+	delete shaderManager;
+	delete textureManager;
 	return 0;
 }
 

@@ -4,6 +4,7 @@
 
 class Shader
 {
+	std::string name;
 	unsigned int shaderID, uniformProjection, uniformModel;
 	bool error;
 	void CompileShader(const char *vertexCode, const char *fragmentCode);
@@ -14,7 +15,7 @@ public:
 	Shader();
 
 	void CreateFromString(const char *vertexCode, const char *fragmentCode);
-	void CreateFromFiles(const char *vertexLocation, const char *fragmentLocation);
+	void CreateFromFiles(std::string shaderName,const char *vertexLocation, const char *fragmentLocation);
 	bool good()
 	{
 		return !error;
@@ -23,9 +24,12 @@ public:
 	unsigned int GetProjectionLocation();
 	unsigned int GetModelLocation();
 	unsigned int GetShaderID();
-
-	void UseShader();
-	void ClearShader();
+	std::string GetName()
+	{
+		return name;
+	};
+	void Use();
+	void Clear();
 
 	~Shader();
 

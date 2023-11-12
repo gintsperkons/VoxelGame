@@ -76,7 +76,7 @@ void ShaderManager::CreateFromFiles(const char *vertexLocation, const char *frag
 	std::string shaderName = getShaderName(vertexLocation,fragmentLocation);
 	
 	Shader *shader = new Shader();
-	shader->CreateFromFiles((shaderPath+"\\" + vertexLocation).c_str(), (shaderPath + "\\" + fragmentLocation).c_str());
+	shader->CreateFromFiles(shaderName,(shaderPath+"\\" + vertexLocation).c_str(), (shaderPath + "\\" + fragmentLocation).c_str());
 	if (!shader->good())
 	{
 		delete shader;
@@ -92,6 +92,24 @@ void ShaderManager::CreateFromFiles(const char *vertexLocation, const char *frag
 		delete shaderList[shaderName];
 		shaderList[shaderName] = shader;
 	}
+}
+
+void ShaderManager::UseShader(std::string shaderName)
+{
+	//if texture is already in use then return
+	if (currentShader != nullptr && currentShader->GetName() == shaderName)
+		return;
+	//if texture is in list then use it
+	if (shaderList.find(shaderName) != shaderList.end())
+	{
+		shaderList[shaderName]->Use();
+		currentShader = shaderList[shaderName];
+		return;
+	}
+	else
+	shaderList["base"]->Use();
+
+	std::cout << "Shader not found: " << shaderName << std::endl;
 
 }
 
@@ -100,9 +118,11 @@ void ShaderManager::ClearShaderList()
 	//delete all shaders
 	for (auto it : shaderList)
 	{
-		it.second->ClearShader();
+		it.second->Clear();
 		delete(it.second);
 	}
+	if(currentShader !=nullptr)
+		currentShader->Clear();
 
 }
 
