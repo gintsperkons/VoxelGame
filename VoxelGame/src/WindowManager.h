@@ -14,6 +14,9 @@ class WindowManager
 	glm::vec4 clearColor;
 	std::string title;
 	InputManager *inputManager;
+	int bufferWidth;
+	int bufferHeight;
+
 
 	static void ResizeCallback(GLFWwindow *window, int width, int height);
 
@@ -29,5 +32,15 @@ public:
 
 	WindowManager(InputManager *inputManager);
 	 ~WindowManager();
+
+
+	 int getBufferWidth()
+	 {
+		 return bufferWidth;
+	 }
+	 int getBufferHeight()
+	 {
+		 return bufferHeight;
+	 }
 };
 

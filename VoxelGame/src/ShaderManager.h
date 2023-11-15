@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include <map>
+#include <GLM/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
 
 class Shader;
@@ -20,7 +23,7 @@ public:
 	void CreateFromFiles(const char *vertexLocation, const char *fragmentLocation);
 
 	void UseShader(std::string shaderName);
-
+	void SetMat4(std::string type, glm::mat4 *matrix);
 	void ClearShaderList();
 	~ShaderManager();
 

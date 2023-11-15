@@ -7,6 +7,10 @@
 #include <vector>
 #include "Objects/Mesh.h"
 #include "TextureManager.h"
+#include "Camera.h"
+#include "Player.h"
+#include <GLM/glm.hpp>
+#include <GLM\gtc\matrix_transform.hpp>
 
 
 
@@ -17,14 +21,55 @@
 
 float vertices[] = {
 // positions          // colors           // texture coords
- 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
- 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
--0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
--0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+	//back
+ 0.0f,  0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,    
+ 0.0f,  1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,   
+ 1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,   
+ 1.0f,  0.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,  
+	//right
+ 1.0f,  0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+ 1.0f,  1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+ 1.0f,  1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+ 1.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+	//front
+ 1.0f,  0.0f, 1.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+ 1.0f,  1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+ 0.0f,  1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+ 0.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+	//left
+ 0.0f,  0.0f, 1.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+ 0.0f,  1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+ 0.0f,  1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+ 0.0f,  0.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+	//top
+ 0.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+ 0.0f,  1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+ 1.0f,  1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+ 1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+	//bottom
+ 1.0f,  0.0f, 1.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+ 1.0f,  0.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
+ 0.0f,  0.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+ 0.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f
 };
 unsigned int indices[] = {  // note that we start from 0!
-	0, 1, 3,   // first triangle
-	1, 2, 3    // second triangle
+	0, 2, 1,   
+	0, 3, 2,    
+
+	4, 6, 5,
+	4, 7, 6,
+	
+	8, 10, 9,
+	8, 11, 10,
+	
+	12, 14, 13,
+	12, 15, 14,
+	
+	16, 18, 17,
+	16, 19, 18,
+
+	20, 21, 22,
+	20, 22, 23
 };
 
 
@@ -35,19 +80,21 @@ std::vector<Mesh> meshList;
 
 int main()
 {
+	
+
 	InputManager *inputManager = new InputManager();
 	WindowManager *windowManager = new WindowManager(inputManager);
 	ShaderManager *shaderManager = new ShaderManager();
 	TextureManager *textureManager = new TextureManager();
-
+	Camera * playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+	Player * player = new Player(playerCamera, inputManager,5,0.1);
 	inputManager->Init();
 
 
-	Mesh m1 = Mesh();
+	Mesh m1 = Mesh(shaderManager);
 
-	m1.Create(vertices, indices, 32, 6);
+	m1.Create(vertices, indices, 192, 36);
 	meshList.push_back(m1);
-
 
 
 
@@ -58,7 +105,8 @@ int main()
 	float lastFrame = 0.0f;
 	float deltaTime = 0.0f;
 
-
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f),( windowManager->getBufferWidth() / (float)windowManager->getBufferHeight()), 0.1f, 100.0f);
+	
 
 
 	//Game loop
@@ -76,17 +124,18 @@ int main()
 		//Updates
 		inputManager->Update();
 		windowManager->Update();
-
+		player->update(deltaTime);
 
 
 
 		
 
 		shaderManager->UseShader("solid");
-
-
 		textureManager->UseTexture("default");
-
+		
+		shaderManager->SetMat4("projection",(&projection));
+		glm::mat4 view = playerCamera->getViewMatrix();
+		shaderManager->SetMat4("view",&view);
 
 
 
@@ -108,6 +157,8 @@ int main()
 	delete inputManager;
 	delete shaderManager;
 	delete textureManager;
+	delete playerCamera;
+	delete player;
 	return 0;
 }
 

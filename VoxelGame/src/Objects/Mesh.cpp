@@ -1,7 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh()
-{}
+Mesh::Mesh(ShaderManager *shaderManager)
+{
+this->shaderManager = shaderManager;
+model = glm::mat4(1.0f);
+}
 
 Mesh::~Mesh()
 {
@@ -53,7 +56,7 @@ void Mesh::Render()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-
+	shaderManager->SetMat4("model",&model);
 }
 
 void Mesh::Clear()

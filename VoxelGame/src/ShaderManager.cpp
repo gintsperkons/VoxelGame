@@ -113,6 +113,16 @@ void ShaderManager::UseShader(std::string shaderName)
 
 }
 
+void ShaderManager::SetMat4(std::string type, glm::mat4* matrix)
+{
+	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
+	if (uniformLocation == -1)
+	{
+		std::cout << "Uniform not found: " << type << std::endl;
+	}
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(*matrix));
+}
+
 void ShaderManager::ClearShaderList()
 {
 	//delete all shaders
