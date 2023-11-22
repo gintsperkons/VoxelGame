@@ -105,8 +105,7 @@ int main()
 	float lastFrame = 0.0f;
 	float deltaTime = 0.0f;
 
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f),( windowManager->getBufferWidth() / (float)windowManager->getBufferHeight()), 0.1f, 100.0f);
-	
+
 
 
 	//Game loop
@@ -133,6 +132,9 @@ int main()
 		shaderManager->UseShader("solid");
 		textureManager->UseTexture("default");
 		
+
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (windowManager->getBufferWidth() / (float)windowManager->getBufferHeight()), 0.1f, 100.0f);
+
 		shaderManager->SetMat4("projection",(&projection));
 		glm::mat4 view = playerCamera->getViewMatrix();
 		shaderManager->SetMat4("view",&view);
