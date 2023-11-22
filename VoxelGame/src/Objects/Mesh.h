@@ -5,8 +5,11 @@ class Mesh
 {
 	unsigned int VAO, VBO, IBO;
 	int indexCount;
-	ShaderManager *shaderManager;
-	glm::mat4 model;
+	
+
+	protected:
+		ShaderManager *shaderManager;
+		glm::mat4 model;
 
 	public:
 	Mesh();

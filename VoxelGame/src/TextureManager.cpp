@@ -26,7 +26,7 @@ TextureManager::TextureManager()
 	{
 		for (std::string &entry : FileHandler::GetFilesInDirectory(texturePath))
 		{
-			if (FileHandler::IsDirectory(texturePath))
+			if (FileHandler::IsDirectory(entry))
 				continue;
 			std::string fileName = entry.substr(std::string(entry).rfind("\\") + 1);
 			CreateTexture(fileName);

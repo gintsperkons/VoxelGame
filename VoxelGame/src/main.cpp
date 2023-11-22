@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "Objects/Mesh.h"
+#include "Objects/Block.h"
 #include "TextureManager.h"
 #include "SkyBox.h"
 #include "Camera.h"
@@ -21,62 +22,11 @@
 
 
 
-float vertices[] = {
-// positions          // colors           // texture coords
-	//back
- 0.0f,  0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,    
- 0.0f,  1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,   
- 1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,   
- 1.0f,  0.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,  
-	//right
- 1.0f,  0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
- 1.0f,  1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
- 1.0f,  1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
- 1.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-	//front
- 1.0f,  0.0f, 1.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
- 1.0f,  1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
- 0.0f,  1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
- 0.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-	//left
- 0.0f,  0.0f, 1.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
- 0.0f,  1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
- 0.0f,  1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
- 0.0f,  0.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-	//top
- 0.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
- 0.0f,  1.0f, 1.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
- 1.0f,  1.0f, 1.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
- 1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-	//bottom
- 1.0f,  0.0f, 1.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
- 1.0f,  0.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
- 0.0f,  0.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
- 0.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f
-};
-unsigned int indices[] = {  // note that we start from 0!
-	0, 2, 1,   
-	0, 3, 2,    
-
-	4, 6, 5,
-	4, 7, 6,
-	
-	8, 10, 9,
-	8, 11, 10,
-	
-	12, 14, 13,
-	12, 15, 14,
-	
-	16, 18, 17,
-	16, 19, 18,
-
-	20, 21, 22,
-	20, 22, 23
-};
 
 
 
-std::vector<Mesh> meshList;
+
+std::vector<Block*> meshList;
 
 
 
@@ -94,10 +44,18 @@ int main()
 	SkyBox::GetInstance()->Create();
 
 
-	Mesh m1 = Mesh();
+	for (int x = 0; x < 16; x++)
+	{
+		for (int z = 0; z < 16; z++)
+		{
+			Block *m = new Block();
+			m->Create(glm::vec3(x, 0, z));
+			meshList.push_back(m);
 
-	m1.Create(vertices, indices, 192, 36);
-	meshList.push_back(m1);
+		}
+	}
+
+	
 
 
 
@@ -109,10 +67,9 @@ int main()
 	float deltaTime = 0.0f;
 
 
-
-
 	ShaderManager::GetInstance()->UseShader("solid");
 	TextureManager::GetInstance()->UseTexture("andesite");
+
 	//Game loop
 	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
 	{
@@ -137,25 +94,28 @@ int main()
 		
 
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
-
-		ShaderManager::GetInstance()->SetMat4("projection",&projection);
 		glm::mat4 view = playerCamera->getViewMatrix();
+		ShaderManager::GetInstance()->SetMat4("projection",&projection);
 		ShaderManager::GetInstance()->SetMat4("view",&view);
 
 
 
 		//Draw sky
-		SkyBox::GetInstance()->Render(view, projection);
+		//SkyBox::GetInstance()->Render(view, projection);
 
 		//Draw else
+
+
 
 		ShaderManager::GetInstance()->UseShader("solid");
 		TextureManager::GetInstance()->UseTexture("andesite");
 		for (int i = 0; i < meshList.size(); i++)
 		{
-			meshList[i].Render();
+			meshList[i]->Render();
 		}
 
+
+		
 
 
 		//Swap buffers
@@ -166,7 +126,10 @@ int main()
 
 	}
 
-
+	for (int i = 0; i < meshList.size(); i++)
+	{
+		delete meshList[i];
+	}
 	delete WindowManager::GetInstance();
 	delete InputManager::GetInstance();
 	delete ShaderManager::GetInstance();
