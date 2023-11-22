@@ -91,6 +91,7 @@ void SkyBox::Create()
 void SkyBox::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
 {
 	viewMatrix = glm::mat4(glm::mat3(viewMatrix));
+	bool faceCullEnabled = glIsEnabled(GL_CULL_FACE);
 	glDepthMask(GL_FALSE);
 	glDisable(GL_CULL_FACE);
 
@@ -105,7 +106,8 @@ void SkyBox::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
 
 	skyMesh->Render();
 
-	glEnable(GL_CULL_FACE);
+	if (faceCullEnabled)
+		glEnable(GL_CULL_FACE);
 	glDepthMask(GL_TRUE);
 }
 

@@ -16,9 +16,14 @@ class WindowManager
 	InputManager *inputManager;
 	int bufferWidth;
 	int bufferHeight;
-
+	bool fullscreen;
+	glm::ivec2 savedPos;
+	glm::ivec2 savedSize;
 
 	static void ResizeCallback(GLFWwindow *window, int width, int height);
+
+	void ChangePolygonMode();
+	void ChangeFullscreen();
 
 public:
 	GLFWwindow *GetWindow();
@@ -30,6 +35,7 @@ public:
 
 	void Update();
 
+	bool IsFullscreen();
 	WindowManager();
 	 ~WindowManager();
 

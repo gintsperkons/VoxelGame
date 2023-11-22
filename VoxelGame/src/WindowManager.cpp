@@ -18,6 +18,49 @@ void WindowManager::ResizeCallback(GLFWwindow *window, int width, int height)
 	glfwGetFramebufferSize(window, &wm->bufferWidth, &wm->bufferHeight);
 }
 
+void WindowManager::ChangePolygonMode()
+{
+	int polygonMode;
+	glGetIntegerv(GL_POLYGON_MODE, &polygonMode);
+	if (polygonMode == GL_LINE)
+	{
+		glEnable(GL_CULL_FACE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	if (polygonMode == GL_FILL)
+	{
+		glDisable(GL_CULL_FACE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+}
+
+void WindowManager::ChangeFullscreen()
+{
+	fullscreen = !fullscreen;
+	if (IsFullscreen() == fullscreen)
+	{
+		return;
+	}
+	if (fullscreen)
+	{
+		// get resolution of monitor
+		GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+
+		// backup window position and window size
+		glfwGetWindowPos(window, &savedPos[0], &savedPos[1]);
+		glfwGetWindowSize(window, &savedSize[0], &savedSize[1]);
+		// switch to full screen
+		glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, 0);
+	}
+	else
+	{
+	// restore last window size and position
+		glfwSetWindowMonitor(window, nullptr, savedPos[0], savedPos[1], savedSize[0], savedSize[1], 0);
+	}
+
+}
+
 GLFWwindow *WindowManager::GetWindow()
 {
 	return this->window;
@@ -48,6 +91,17 @@ void WindowManager::Update()
 {
 	if (inputManager->GetKeyPressed(GLFW_KEY_ESCAPE))
 		glfwSetWindowShouldClose(window, true);
+	if (inputManager->GetKeyPressed(GLFW_KEY_F4))
+	{
+		ChangePolygonMode();
+	}
+	if (inputManager->GetKeyPressed(GLFW_KEY_F11))
+	{
+		ChangeFullscreen();
+	}
+
+
+
 
 }
 
@@ -107,6 +161,12 @@ inputManager(InputManager::GetInstance())
 	glViewport(0, 0, resolution.x, resolution.y);
 
 	glfwGetFramebufferSize(window, &bufferWidth, &bufferHeight);
+}
+
+
+bool WindowManager::IsFullscreen()
+{
+	return glfwGetWindowMonitor(window) != nullptr;
 }
 
 WindowManager::~WindowManager()
