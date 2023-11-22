@@ -1,3 +1,4 @@
+#include <GLAD/glad.h>
 #include <filesystem>
 #include <iostream>
 #include <set>
@@ -25,6 +26,8 @@ TextureManager::TextureManager()
 	{
 		for (std::string &entry : FileHandler::GetFilesInDirectory(texturePath))
 		{
+			if (FileHandler::IsDirectory(texturePath))
+				continue;
 			std::string fileName = entry.substr(std::string(entry).rfind("\\") + 1);
 			CreateTexture(fileName);
 		}
@@ -37,7 +40,7 @@ void TextureManager::CreateTexture(std::string fileName)
 	//creates texture and if successful then ad to list
 	std::string textureName = std::string(fileName).substr(0, std::string(fileName).find("."));
 	Texture *tempTexture = new Texture();
-	tempTexture->Create(texturePath + "\\" + fileName, textureName);
+		tempTexture->Create(texturePath + "\\" + fileName, textureName, GL_TEXTURE_2D);
 	if (tempTexture->good())
 	//if shader already exists, delete it and replace it
 		if (textureList.find(textureName) == textureList.end())
@@ -53,6 +56,11 @@ void TextureManager::CreateTexture(std::string fileName)
 
 }
 
+void TextureManager::SetSkyMapTexture()
+{
+	
+}
+
 void TextureManager::UseTexture(std::string textureName)
 {	
 	//if texture is already in use then return
@@ -65,6 +73,13 @@ void TextureManager::UseTexture(std::string textureName)
 		currentTexture = textureList[textureName];
 		return;
 	}
+	if (textureList.find("default") != textureList.end())
+	{
+		textureList["default"]->Use();
+		currentTexture = textureList["default"];
+		return;
+	}
+
 		std::cout << "Texture not found: " << textureName << std::endl;
 		
 }

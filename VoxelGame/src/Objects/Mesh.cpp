@@ -1,8 +1,8 @@
 #include "Mesh.h"
 
-Mesh::Mesh(ShaderManager *shaderManager)
+Mesh::Mesh()
 {
-this->shaderManager = shaderManager;
+this->shaderManager = ShaderManager::GetInstance();
 model = glm::mat4(1.0f);
 }
 
@@ -56,7 +56,9 @@ void Mesh::Render()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	shaderManager->SetMat4("model",&model);
+
+	if(!shaderManager->uniformExists("model"))
+		shaderManager->SetMat4("model",&model);
 }
 
 void Mesh::Clear()
@@ -80,4 +82,9 @@ void Mesh::Clear()
 	}
 
 	indexCount = 0;
+}
+
+unsigned int Mesh::GetVAO()
+{
+	return VAO;
 }

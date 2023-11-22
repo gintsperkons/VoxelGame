@@ -9,12 +9,12 @@ class Mesh
 	glm::mat4 model;
 
 	public:
-	Mesh(ShaderManager *shaderManager);
+	Mesh();
 	~Mesh();
 
 	void Create(float *vertices, unsigned int *indices, unsigned int numOfVertices, unsigned int numOfIndices);
 	void Render();
 	void Clear();
-
+	unsigned int GetVAO();
 };
 

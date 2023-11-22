@@ -24,7 +24,6 @@ void Camera::update()
 
 	this->front = glm::normalize(this->front);
 
-	std::cout << "Front: " << this->front.x << " " << this->front.y << " " << this->front.z << std::endl;
 
 	this->right = glm::normalize(glm::cross(this->front, this->worldUp));
 	this->up = glm::normalize(glm::cross(this->right, this->front));

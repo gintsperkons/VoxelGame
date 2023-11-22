@@ -9,7 +9,7 @@ class Texture
 	bool error;
 public:
 	Texture();
-	void Create(std::string imagePath, std::string textureName);
+	void Create(std::string imagePath, std::string textureName,int type);
 	void Use();
 	std::string GetName()
 	{
@@ -19,6 +19,7 @@ public:
 	{
 		return !error;
 	}
+	
 	void Clear();
 	~Texture();
 };

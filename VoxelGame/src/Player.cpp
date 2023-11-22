@@ -36,7 +36,6 @@ void Player::updateKeyInput(float deltaTime)
 	{
 		position += camera->GetRight() * velocity;
 	}
-	std::cout << "Position: " << position.x << " " << position.y << " " << position.z << std::endl;
 
 }
 

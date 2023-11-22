@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include "FileHandling/FileHandler.h"
 #include <GLAD/glad.h>
+#include <iostream>
 
 void Shader::CompileShader(const char *vertexCode, const char *fragmentCode)
 {
@@ -79,14 +80,19 @@ Shader::Shader()
 }
 
 
-void Shader::CreateFromString(const char *vertexCode, const char *fragmentCode)
+std::string Shader::GetName()
 {
-	CompileShader(vertexCode, fragmentCode);
+	return name;
+}
+
+void Shader::CreateBase()
+{
+	CompileShader(vShader, fShader);
 }
 
 void Shader::CreateFromFiles(std::string shaderName,const char *vertexLocation, const char *fragmentLocation)
 {	
-	std::string name = shaderName;
+	this->name = shaderName;
 	std::string vertexString;
 	std::string fragmentString;
 	if (std::string(vertexLocation).find("internal>file") == std::string::npos)

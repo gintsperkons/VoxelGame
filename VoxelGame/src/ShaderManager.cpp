@@ -24,12 +24,13 @@ std::string ShaderManager::getShaderName(std::string vertexFileName, std::string
 		return shaderNameV;
 	else
 	{
+
 		if (shaderNameV == "base" || shaderNameV == "internal>file")
 			return shaderNameF;
 		if (shaderNameF == "base" || shaderNameF == "internal>file")
 			return shaderNameV;
 	}
-	return shaderNameV;;
+	return shaderNameV;
 }
 
 ShaderManager::ShaderManager()
@@ -38,7 +39,7 @@ ShaderManager::ShaderManager()
 	//create base shader from hardcoded strings
 	std::string shaderName = "base";
 	Shader *shader = new Shader();
-	shader->CreateFromString(vShader, fShader);
+	shader->CreateBase();
 	shaderList[shaderName] = shader;
 
 	//create shaders from files
@@ -99,6 +100,7 @@ void ShaderManager::CreateFromFiles(const char *vertexLocation, const char *frag
 		delete shaderList[shaderName];
 		shaderList[shaderName] = shader;
 	}
+
 }
 
 void ShaderManager::UseShader(std::string shaderName)
@@ -115,19 +117,26 @@ void ShaderManager::UseShader(std::string shaderName)
 	}
 	else
 		shaderList["base"]->Use();
-
+		currentShader = shaderList["base"];
 	std::cout << "Shader not found: " << shaderName << std::endl;
 
 }
 
 void ShaderManager::SetMat4(std::string type, glm::mat4 *matrix)
 {
+
+
 	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
 	if (uniformLocation == -1)
 	{
 		std::cout << "Uniform not found: " << type << std::endl;
 	}
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(*matrix));
+}
+
+bool ShaderManager::uniformExists(std::string uniformName)
+{
+	return glGetUniformLocation(currentShader->GetShaderID(), uniformName.c_str()) < 0;
 }
 
 void ShaderManager::ClearShaderList()

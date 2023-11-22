@@ -1,3 +1,4 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include <iostream>
 #include <glad/glad.h>
 #include "WindowManager.h"
@@ -7,6 +8,7 @@
 #include <vector>
 #include "Objects/Mesh.h"
 #include "TextureManager.h"
+#include "SkyBox.h"
 #include "Camera.h"
 #include "Player.h"
 #include <GLM/glm.hpp>
@@ -85,12 +87,14 @@ int main()
 	WindowManager::GetInstance();
 	ShaderManager::GetInstance();
 	TextureManager::GetInstance();
+	SkyBox::GetInstance();
 	Camera * playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 	Player * player = new Player(playerCamera, InputManager::GetInstance(),5,0.1);
 	InputManager::GetInstance()->Init();
+	SkyBox::GetInstance()->Create();
 
 
-	Mesh m1 = Mesh(ShaderManager::GetInstance());
+	Mesh m1 = Mesh();
 
 	m1.Create(vertices, indices, 192, 36);
 	meshList.push_back(m1);
@@ -107,6 +111,8 @@ int main()
 
 
 
+	ShaderManager::GetInstance()->UseShader("solid");
+	TextureManager::GetInstance()->UseTexture("andesite");
 	//Game loop
 	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
 	{
@@ -128,22 +134,29 @@ int main()
 
 		
 
-		ShaderManager::GetInstance()->UseShader("solid");
-		TextureManager::GetInstance()->UseTexture("default");
 		
 
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
 
-		ShaderManager::GetInstance()->SetMat4("projection",(&projection));
+		ShaderManager::GetInstance()->SetMat4("projection",&projection);
 		glm::mat4 view = playerCamera->getViewMatrix();
 		ShaderManager::GetInstance()->SetMat4("view",&view);
 
 
 
+		//Draw sky
+		SkyBox::GetInstance()->Render(view, projection);
+
+		//Draw else
+
+		ShaderManager::GetInstance()->UseShader("solid");
+		TextureManager::GetInstance()->UseTexture("andesite");
 		for (int i = 0; i < meshList.size(); i++)
 		{
 			meshList[i].Render();
 		}
+
+
 
 		//Swap buffers
 		WindowManager::GetInstance()->SwapBuffers();
@@ -158,6 +171,7 @@ int main()
 	delete InputManager::GetInstance();
 	delete ShaderManager::GetInstance();
 	delete TextureManager::GetInstance();
+	delete SkyBox::GetInstance();
 	delete playerCamera;
 	delete player;
 	return 0;
