@@ -48,7 +48,7 @@ void WindowManager::Update()
 WindowManager::WindowManager(InputManager *inputManager) : window(nullptr),
 resolution(800, 600),
 title("VoxelGame"),
-clearColor(0.2f, 0.5f, 0.2f, 1.0f),
+clearColor(0.0f, 0.0f, 0.0f, 1.0f),
 inputManager(inputManager)
 {
 
