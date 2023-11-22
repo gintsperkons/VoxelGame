@@ -81,17 +81,16 @@ std::vector<Mesh> meshList;
 int main()
 {
 	
-
-	InputManager *inputManager = new InputManager();
-	WindowManager *windowManager = new WindowManager(inputManager);
-	ShaderManager *shaderManager = new ShaderManager();
-	TextureManager *textureManager = new TextureManager();
+	InputManager::GetInstance();
+	WindowManager::GetInstance();
+	ShaderManager::GetInstance();
+	TextureManager::GetInstance();
 	Camera * playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
-	Player * player = new Player(playerCamera, inputManager,5,0.1);
-	inputManager->Init();
+	Player * player = new Player(playerCamera, InputManager::GetInstance(),5,0.1);
+	InputManager::GetInstance()->Init();
 
 
-	Mesh m1 = Mesh(shaderManager);
+	Mesh m1 = Mesh(ShaderManager::GetInstance());
 
 	m1.Create(vertices, indices, 192, 36);
 	meshList.push_back(m1);
@@ -109,7 +108,7 @@ int main()
 
 
 	//Game loop
-	while (!glfwWindowShouldClose(windowManager->GetWindow()))
+	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
 	{
 		//Delta time
 		float currentFrame = (float)glfwGetTime();
@@ -121,23 +120,23 @@ int main()
 
 
 		//Updates
-		inputManager->Update();
-		windowManager->Update();
+		InputManager::GetInstance()->Update();
+		WindowManager::GetInstance()->Update();
 		player->update(deltaTime);
 
 
 
 		
 
-		shaderManager->UseShader("solid");
-		textureManager->UseTexture("default");
+		ShaderManager::GetInstance()->UseShader("solid");
+		TextureManager::GetInstance()->UseTexture("default");
 		
 
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (windowManager->getBufferWidth() / (float)windowManager->getBufferHeight()), 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
 
-		shaderManager->SetMat4("projection",(&projection));
+		ShaderManager::GetInstance()->SetMat4("projection",(&projection));
 		glm::mat4 view = playerCamera->getViewMatrix();
-		shaderManager->SetMat4("view",&view);
+		ShaderManager::GetInstance()->SetMat4("view",&view);
 
 
 
@@ -147,18 +146,18 @@ int main()
 		}
 
 		//Swap buffers
-		windowManager->SwapBuffers();
+		WindowManager::GetInstance()->SwapBuffers();
 		//Clear
-		windowManager->Clear();
+		WindowManager::GetInstance()->Clear();
 
 
 	}
 
 
-	delete windowManager;
-	delete inputManager;
-	delete shaderManager;
-	delete textureManager;
+	delete WindowManager::GetInstance();
+	delete InputManager::GetInstance();
+	delete ShaderManager::GetInstance();
+	delete TextureManager::GetInstance();
 	delete playerCamera;
 	delete player;
 	return 0;

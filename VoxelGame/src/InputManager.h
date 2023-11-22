@@ -49,5 +49,8 @@ public:
 	bool GetKeyReleased(int key);
 	glm::vec2 GetDeltaMouse();
 	float GetScroll();
+
+
+	static InputManager* GetInstance();
 };
 

@@ -4,6 +4,15 @@
 #include "TextureManager.h"
 #include "FileHandling/FileHandler.h"
 
+static TextureManager* instance = nullptr;
+TextureManager *TextureManager::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new TextureManager();
+	return instance;
+}
+
+
 TextureManager::TextureManager()
 {
 	//get path to textures folder and create default texture

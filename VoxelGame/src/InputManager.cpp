@@ -6,6 +6,14 @@
 #include "WindowManager.h"
 
 
+static InputManager* instance = nullptr;
+InputManager* InputManager::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new InputManager();
+	return instance;
+}
+
 void InputManager::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	InputManager* input = static_cast<WindowManager*>(glfwGetWindowUserPointer(window))->GetInputManager();

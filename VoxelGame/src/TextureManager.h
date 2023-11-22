@@ -19,5 +19,9 @@ void UseTexture(std::string textureName);
 void ClearTextureList();
 
 ~TextureManager();
+
+
+static TextureManager *GetInstance();
+
 };
 

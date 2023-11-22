@@ -3,6 +3,14 @@
 #include "WindowManager.h"
 #include "InputManager.h"
 
+static WindowManager *instance = nullptr;
+WindowManager *WindowManager::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new WindowManager();
+	return instance;
+}
+
 void WindowManager::ResizeCallback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -45,11 +53,11 @@ void WindowManager::Update()
 
 
 
-WindowManager::WindowManager(InputManager *inputManager) : window(nullptr),
+WindowManager::WindowManager() : window(nullptr),
 resolution(800, 600),
 title("VoxelGame"),
 clearColor(0.0f, 0.0f, 0.0f, 1.0f),
-inputManager(inputManager)
+inputManager(InputManager::GetInstance())
 {
 
 	//Initialize GLFW and set window hints

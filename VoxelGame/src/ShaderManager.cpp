@@ -7,6 +7,13 @@
 #include <GLAD/glad.h>
 #include <filesystem>
 
+static ShaderManager *instance = nullptr;
+ShaderManager *ShaderManager::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new ShaderManager();
+	return instance;
+}
 
 
 std::string ShaderManager::getShaderName(std::string vertexFileName, std::string FragmentFileName)
@@ -17,7 +24,7 @@ std::string ShaderManager::getShaderName(std::string vertexFileName, std::string
 		return shaderNameV;
 	else
 	{
-		if (shaderNameV == "base" || shaderNameV=="internal>file")
+		if (shaderNameV == "base" || shaderNameV == "internal>file")
 			return shaderNameF;
 		if (shaderNameF == "base" || shaderNameF == "internal>file")
 			return shaderNameV;
@@ -43,7 +50,7 @@ ShaderManager::ShaderManager()
 		for (std::string &entry : FileHandler::GetFilesInDirectory(shaderPath))
 		{
 			std::string fileName = entry.substr(std::string(entry).rfind("\\") + 1);
-			allFiles.insert(allFiles.end(),fileName.substr(0, std::string(fileName).rfind(".")));
+			allFiles.insert(allFiles.end(), fileName.substr(0, std::string(fileName).rfind(".")));
 		}
 	}
 	//create shaders from files
@@ -54,7 +61,7 @@ ShaderManager::ShaderManager()
 		if (FileHandler::Exists(shaderPath + "\\" + shaderName + ".vert"))
 			vertexFileName = shaderName + ".vert";
 		else
-			vertexFileName =  "internal>file";
+			vertexFileName = "internal>file";
 		if (FileHandler::Exists(shaderPath + "\\" + shaderName + ".frag"))
 			fragmentFileName = shaderName + ".frag";
 		else
@@ -62,7 +69,7 @@ ShaderManager::ShaderManager()
 
 		CreateFromFiles(vertexFileName.c_str(), fragmentFileName.c_str());
 	});
-	
+
 
 
 }
@@ -73,10 +80,10 @@ ShaderManager::ShaderManager()
 void ShaderManager::CreateFromFiles(const char *vertexLocation, const char *fragmentLocation)
 {
 	//create shader from files
-	std::string shaderName = getShaderName(vertexLocation,fragmentLocation);
-	
+	std::string shaderName = getShaderName(vertexLocation, fragmentLocation);
+
 	Shader *shader = new Shader();
-	shader->CreateFromFiles(shaderName,(shaderPath+"\\" + vertexLocation).c_str(), (shaderPath + "\\" + fragmentLocation).c_str());
+	shader->CreateFromFiles(shaderName, (shaderPath + "\\" + vertexLocation).c_str(), (shaderPath + "\\" + fragmentLocation).c_str());
 	if (!shader->good())
 	{
 		delete shader;
@@ -107,13 +114,13 @@ void ShaderManager::UseShader(std::string shaderName)
 		return;
 	}
 	else
-	shaderList["base"]->Use();
+		shaderList["base"]->Use();
 
 	std::cout << "Shader not found: " << shaderName << std::endl;
 
 }
 
-void ShaderManager::SetMat4(std::string type, glm::mat4* matrix)
+void ShaderManager::SetMat4(std::string type, glm::mat4 *matrix)
 {
 	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
 	if (uniformLocation == -1)
@@ -131,7 +138,7 @@ void ShaderManager::ClearShaderList()
 		it.second->Clear();
 		delete(it.second);
 	}
-	if(currentShader !=nullptr)
+	if (currentShader != nullptr)
 		currentShader->Clear();
 
 }

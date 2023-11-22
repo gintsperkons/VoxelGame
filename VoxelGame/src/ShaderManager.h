@@ -30,6 +30,9 @@ public:
 
 
 
+
+	static ShaderManager *GetInstance();
+
 	private:
 		//Base shader for if no file found
 	// Vertex Shader
@@ -53,6 +56,10 @@ void main()                                                                   \n
 {                                                                             \n\
     colour = vec4(1.0, 0.0, 0.0, 1.0);                                         \n\
 }";
+
+
+
+
 };
 
 

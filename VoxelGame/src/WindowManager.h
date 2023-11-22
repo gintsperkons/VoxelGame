@@ -30,7 +30,7 @@ public:
 
 	void Update();
 
-	WindowManager(InputManager *inputManager);
+	WindowManager();
 	 ~WindowManager();
 
 
@@ -42,5 +42,7 @@ public:
 	 {
 		 return bufferHeight;
 	 }
+
+	 static WindowManager *GetInstance();
 };
 
