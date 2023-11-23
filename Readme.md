@@ -66,6 +66,7 @@ Project Link: [https://github.com/gintsperkons/VoxelGame](ProjectLink)
 
 ## Acknowledgments
 
+
 <!-- Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off! -->
 
 * [Learn OpenGL](LearnOpenGLLink)
@@ -75,6 +76,7 @@ Project Link: [https://github.com/gintsperkons/VoxelGame](ProjectLink)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!-- MARKDOWN LINKS & IMAGES -->
 [ProjectLink]:https://github.com/gintsperkons/VoxelGame
+
 
 [LearnOpenGLLink]:https://learnopengl.com/
 [OpenGLTutorialLink]:http://www.opengl-tutorial.org
