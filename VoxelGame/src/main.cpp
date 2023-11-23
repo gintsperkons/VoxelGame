@@ -101,7 +101,7 @@ int main()
 
 
 		//Draw sky
-		//SkyBox::GetInstance()->Render(view, projection);
+		SkyBox::GetInstance()->Render(view, projection);
 
 		//Draw else
 
