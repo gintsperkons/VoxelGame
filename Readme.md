@@ -32,33 +32,57 @@
 
 ### Built With
 
+#### Software
+
 * Visual Studio 2021
-* GLM
-* GLAD
-* GLFW
+
+#### Libreries
+* [GLM](GLMLink)
+* [GLAD](GLADLink)
+* [GLFW](GLFWLink)
+
+#### Graphics interface
+* [OpenGL](OpenGLLink)
 
 ## Getting Started
 ### Prerequisites
 
-- Visual Studio 2021
+- Visual Studio 2022
 
 ### Installation
 ## Usage
 ## Roadmap
 
-- [ ] make basic app
+###v0.1
+- [ ] make generation
+- [ ] make world data structure
+- [ ] make block placement
+- [ ] make block remove
 
 ## Contributing
 ## License
 ## Contact
-Project Link: [https://github.com/gintsperkons/VoxelGame](https://github.com/gintsperkons/VoxelGame)
+Project Link: [https://github.com/gintsperkons/VoxelGame](ProjectLink)
 
 ## Acknowledgments
 
 <!-- Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off! -->
 
-* [Learn OpenGL](https://learnopengl.com/)
+* [Learn OpenGL](LearnOpenGLLink)
+* [OpenGL Tutorial](OpenGLTutorialLink)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!-- MARKDOWN LINKS & IMAGES -->
+[ProjectLink]:https://github.com/gintsperkons/VoxelGame
+
+[LearnOpenGLLink]:https://learnopengl.com/
+[OpenGLTutorialLink]:http://www.opengl-tutorial.org
+
+[GLMLink]:https://github.com/g-truc/glm
+[GLADLink]:https://glad.dav1d.de
+[GLFWLink]:https://www.glfw.org
+[OpenGLLink]:https://www.opengl.org
+
+
+
