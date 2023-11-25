@@ -9,15 +9,16 @@
 #include "Objects/Mesh.h"
 #include "Objects/Block.h"
 #include "TextureManager.h"
+#include "WorldStructure/WorldManager.h"
 #include "SkyBox.h"
 #include "Camera.h"
 #include "Player.h"
 #include <GLM/glm.hpp>
 #include <GLM\gtc\matrix_transform.hpp>
+#include <thread>
 
 
-
-
+float deltaTime;
 
 
 
@@ -30,6 +31,21 @@ std::vector<Block*> meshList;
 
 
 
+void renderLoop()
+{
+}
+
+
+void worldGenLoop()
+{
+	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
+	{
+		WorldManager::GetInstance()->Update(deltaTime);
+	}
+}
+
+
+
 int main()
 {
 	
@@ -38,22 +54,13 @@ int main()
 	ShaderManager::GetInstance();
 	TextureManager::GetInstance();
 	SkyBox::GetInstance();
+	WorldManager::GetInstance();
 	Camera * playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 	Player * player = new Player(playerCamera, InputManager::GetInstance(),5,0.1);
 	InputManager::GetInstance()->Init();
 	SkyBox::GetInstance()->Create();
 
 
-	for (int x = 0; x < 16; x++)
-	{
-		for (int z = 0; z < 16; z++)
-		{
-			Block *m = new Block();
-			m->Create(glm::vec3(x, 0, z));
-			meshList.push_back(m);
-
-		}
-	}
 
 	
 
@@ -64,11 +71,16 @@ int main()
 
 
 	float lastFrame = 0.0f;
-	float deltaTime = 0.0f;
 
 
 	ShaderManager::GetInstance()->UseShader("solid");
 	TextureManager::GetInstance()->UseTexture("andesite");
+	WorldManager::GetInstance()->CreateWorld("testWorld");
+	WorldManager::GetInstance()->AddPlayer("testWorld",player);
+
+
+
+	std::thread worldGenThread(worldGenLoop);
 
 	//Game loop
 	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
@@ -85,13 +97,13 @@ int main()
 		//Updates
 		InputManager::GetInstance()->Update();
 		WindowManager::GetInstance()->Update();
+
 		player->update(deltaTime);
 
 
 
 		
 
-		
 
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
 		glm::mat4 view = playerCamera->getViewMatrix();
@@ -109,11 +121,7 @@ int main()
 
 		ShaderManager::GetInstance()->UseShader("solid");
 		TextureManager::GetInstance()->UseTexture("andesite");
-		for (int i = 0; i < meshList.size(); i++)
-		{
-			meshList[i]->Render();
-		}
-
+		WorldManager::GetInstance()->Render();
 
 		
 
@@ -126,6 +134,8 @@ int main()
 
 	}
 
+	worldGenThread.join();
+
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		delete meshList[i];
@@ -135,8 +145,11 @@ int main()
 	delete ShaderManager::GetInstance();
 	delete TextureManager::GetInstance();
 	delete SkyBox::GetInstance();
+	delete WorldManager::GetInstance();
 	delete playerCamera;
 	delete player;
+
+
 	return 0;
 }
 

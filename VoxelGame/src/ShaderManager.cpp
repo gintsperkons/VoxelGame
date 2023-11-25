@@ -124,8 +124,6 @@ void ShaderManager::UseShader(std::string shaderName)
 
 void ShaderManager::SetMat4(std::string type, glm::mat4 *matrix)
 {
-
-
 	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
 	if (uniformLocation == -1)
 	{

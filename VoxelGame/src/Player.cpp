@@ -72,6 +72,7 @@ Player::Player(Camera *camera, InputManager* inputManager,float movementSpeed,fl
 	this->position = camera->GetPosition();
 	this->movementSpeed = movementSpeed;
 	this->turnSpeed = turnSpeed;
+	this->renderDistance = 3;
 }
 
 Player::~Player()
@@ -94,4 +95,9 @@ glm::vec3 Player::getPosition()
 Camera *Player::getCamera()
 {
 	return camera;
+}
+
+int Player::getRenderDistance()
+{
+	return renderDistance;
 }

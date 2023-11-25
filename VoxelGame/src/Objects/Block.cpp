@@ -1,6 +1,6 @@
 #include "Block.h"
 #include <iostream>
-float vertices[] = {
+static float vertices[] = {
 // positions          // colors           // texture coords
 	//back
  0.0f,  0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
@@ -33,7 +33,7 @@ float vertices[] = {
  0.0f,  0.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
  0.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f
 };
-unsigned int indices[] = {  // note that we start from 0!
+static unsigned int indices[] = {  // note that we start from 0!
 	0, 2, 1,
 	0, 3, 2,
 
@@ -57,7 +57,9 @@ unsigned int indices[] = {  // note that we start from 0!
 Block::Block():position(glm::vec3(0.0f, 0.0f, 0.0f)),
 axis(glm::vec3(0.0f, 1.0f, 0.0f)),
 angle(0.0f),
-scale(glm::vec3(1.0f, 1.0f, 1.0f))
+scale(glm::vec3(1.0f, 1.0f, 1.0f)),
+type("air"),
+readyToRender(false)
 {
 
 
@@ -68,20 +70,34 @@ Block::~Block()
 	Clear();
 }
 
-void Block::Create(glm::vec3 pos)
+void Block::Create(glm::vec3 pos,std::string type)
 {
-	position = pos;
+	this->type = type;
+	this->position = pos;
+	readyToRender = false;
+}
+
+void Block::CreateGLItems()
+{
 	Mesh::Create(vertices, indices, 192, 36);
+	readyToRender = true;
 }
 
 void Block::Render()
 {
+	if (!readyToRender)
+	{
+		CreateGLItems();
+		return;
+	}
 	glm::mat4 model(1.0f);
 	model = glm::translate(model, position);
 	model = glm::rotate(model, angle, axis);
 	model = glm::scale(model, scale);
-	Mesh::Render();
 	shaderManager->SetMat4("model", &model);
+	shaderManager;
+	Mesh::Render();
+
 }
 
 void Block::Clear()
@@ -105,4 +121,14 @@ void Block::SetRotation(float angle, glm::vec3 axis)
 void Block::SetScale(glm::vec3 scale)
 {
 	this->scale = scale;
+}
+
+void Block::ChangeType(std::string type)
+{
+this->type = type;
+}
+
+std::string Block::GetType()
+{
+	return this->type;
 }

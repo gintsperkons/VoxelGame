@@ -10,6 +10,7 @@ class Player
 	glm::vec3 position;
 	float movementSpeed;
 	float turnSpeed;
+	int renderDistance;
 
 
 
@@ -21,5 +22,6 @@ class Player
 		void update(float deltaTime);
 		glm::vec3 getPosition();
 		Camera *getCamera();
+		int getRenderDistance();
 };
 

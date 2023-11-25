@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\WorldStructure\Chunk.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\SkyBox.cpp" />
     <ClCompile Include="src\Player.cpp" />
@@ -165,8 +166,11 @@
     <ClCompile Include="src\WindowManager.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\WorldStructure\World.cpp" />
+    <ClCompile Include="src\WorldStructure\WorldManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\WorldStructure\Chunk.h" />
     <ClInclude Include="src\Objects\Block.h" />
     <ClInclude Include="src\SkyBox.h" />
     <ClInclude Include="src\Player.h" />
@@ -180,6 +184,8 @@
     <ClInclude Include="src\WindowManager.h" />
     <ClInclude Include="src\TextureManager.h" />
     <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\WorldStructure\World.h" />
+    <ClInclude Include="src\WorldStructure\WorldManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
