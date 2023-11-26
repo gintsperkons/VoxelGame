@@ -1,6 +1,7 @@
 #include "Chunk.h"
 #include <cmath>
 #include <iostream>
+#include "Generator/TerrainGenerator.h"
 
 
 
@@ -15,9 +16,12 @@ Chunk::Chunk(glm::vec2 chunkPos)
 		WORLD_HIGH, std::vector<std::vector<Block *> >(
 		CHUNK_SIZE, std::vector<Block *>(CHUNK_SIZE)));
 	blocks = temp;
+
+	
+
+
 	for (int y = 0; y < WORLD_HIGH; y++)
 	{
-		std::vector < std::vector<std::vector<Block *>>> block();
 		for (int x = 0; x < CHUNK_SIZE; x++)
 		{
 			for (int z = 0; z < CHUNK_SIZE; z++)
@@ -37,13 +41,25 @@ Chunk::~Chunk()
 
 void Chunk::Init()
 {
-		for (int x = 0; x < CHUNK_SIZE; x++)
+	std::cout	 << "Chunk Init" << std::endl;
+
+	glm::vec3 chunkStart = ChunkToWorldPos(chunkPos, glm::vec3(0, 0, 0));
+	std::vector<std::vector<float>> result = TerrainGenerator::GetInstance()->GenerateChunkSurface(chunkStart.x, chunkStart.z, CHUNK_SIZE, CHUNK_SIZE, 0);
+	
+	
+	for (int x = 0; x < CHUNK_SIZE; x++)
+	{
+		for (int z = 0; z < CHUNK_SIZE; z++)
 		{
-			for (int z = 0; z < CHUNK_SIZE; z++)
+			int y = abs(round(result[x][z]));
+
+			blocks[y][z][x]->ChangeType("stone");
+			/*for (; y >= 0; y--)
 			{
-				blocks[0][x][z]->ChangeType("stone");
-			}
+				blocks[y][x][z]->ChangeType("stone");
+			}*/
 		}
+	}
 		loaded = true;
 }
 

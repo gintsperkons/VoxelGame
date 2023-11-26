@@ -1,6 +1,11 @@
-#include <GLFW\glfw3.h>
 #include "Player.h"
 #include <iostream>
+#include "WorldStructure/WorldManager.h"
+
+void Player::updateWorld()
+{
+	currentWorld->PlayerUpdate(this);
+}
 
 void Player::updateKeyInput(float deltaTime)
 {
@@ -66,7 +71,7 @@ void Player::updateMouseInput()
 }
 
 Player::Player(Camera *camera, InputManager* inputManager,float movementSpeed,float turnSpeed)
-{
+{	
 	this->inputManager = inputManager;
 	this->camera = camera;
 	this->position = camera->GetPosition();
@@ -78,6 +83,11 @@ Player::Player(Camera *camera, InputManager* inputManager,float movementSpeed,fl
 Player::~Player()
 {}
 
+void Player::ChangeWorld(std::string worldName)
+{
+	currentWorld = WorldManager::GetInstance()->GetWorld(worldName);
+}
+
 void Player::update(float deltaTime)
 {	
 	updateKeyInput(deltaTime);
@@ -85,6 +95,7 @@ void Player::update(float deltaTime)
 
 	camera->SetPosition(position);
 	camera->update();
+
 }
 
 glm::vec3 Player::getPosition()

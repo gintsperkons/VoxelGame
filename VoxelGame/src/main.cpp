@@ -16,10 +16,11 @@
 #include <GLM/glm.hpp>
 #include <GLM\gtc\matrix_transform.hpp>
 #include <thread>
+#include "WorldStructure/Generator/TerrainGenerator.h"
 
 
 float deltaTime;
-
+Player* player;
 
 
 
@@ -40,7 +41,8 @@ void worldGenLoop()
 {
 	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
 	{
-		WorldManager::GetInstance()->Update(deltaTime);
+			WorldManager::GetInstance()->Update(deltaTime);
+			player->updateWorld();
 	}
 }
 
@@ -55,18 +57,18 @@ int main()
 	TextureManager::GetInstance();
 	SkyBox::GetInstance();
 	WorldManager::GetInstance();
-	Camera * playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
-	Player * player = new Player(playerCamera, InputManager::GetInstance(),5,0.1);
 	InputManager::GetInstance()->Init();
 	SkyBox::GetInstance()->Create();
 
 
 
-	
+	WorldManager::GetInstance()->CreateWorld("testWorld");
 
 
 
-
+	Camera *playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+	player = new Player(playerCamera, InputManager::GetInstance(), 5, 0.1);
+	player->ChangeWorld("testWorld");
 
 
 
@@ -75,8 +77,11 @@ int main()
 
 	ShaderManager::GetInstance()->UseShader("solid");
 	TextureManager::GetInstance()->UseTexture("andesite");
-	WorldManager::GetInstance()->CreateWorld("testWorld");
 	WorldManager::GetInstance()->AddPlayer("testWorld",player);
+
+
+	
+
 
 
 
@@ -105,7 +110,7 @@ int main()
 		
 
 
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(90.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
 		glm::mat4 view = playerCamera->getViewMatrix();
 		ShaderManager::GetInstance()->SetMat4("projection",&projection);
 		ShaderManager::GetInstance()->SetMat4("view",&view);

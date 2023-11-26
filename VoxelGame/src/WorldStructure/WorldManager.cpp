@@ -32,6 +32,8 @@ void WorldManager::CreateWorld(std::string name)
 
 World *WorldManager::GetWorld(std::string name)
 {
+	if(worlds.find(name) != worlds.end())
+		return worlds[name];
 	return nullptr;
 }
 

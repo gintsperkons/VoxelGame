@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,7 +115,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,7 +129,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,10 +147,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Objects\Rendering\RenderElement.cpp" />
+    <ClCompile Include="src\Objects\Rendering\RenderObject.cpp" />
     <ClCompile Include="src\WorldStructure\Chunk.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\SkyBox.cpp" />
@@ -168,8 +170,12 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\WorldStructure\World.cpp" />
     <ClCompile Include="src\WorldStructure\WorldManager.cpp" />
+    <ClCompile Include="src\WorldStructure\Generator\TerrainGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\Objects\Rendering\RenderElement.h" />
+    <ClInclude Include="src\Objects\Rendering\RenderObject.h" />
     <ClInclude Include="src\WorldStructure\Chunk.h" />
     <ClInclude Include="src\Objects\Block.h" />
     <ClInclude Include="src\SkyBox.h" />
@@ -186,6 +192,17 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\WorldStructure\World.h" />
     <ClInclude Include="src\WorldStructure\WorldManager.h" />
+    <ClInclude Include="src\WorldStructure\Generator\TerrainGenerator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="VoxelGame.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\Libraries\x64\bin\FastNoise.dll">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
