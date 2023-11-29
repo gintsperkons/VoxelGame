@@ -66,12 +66,6 @@
     <ClCompile Include="src\WorldStructure\WorldManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Objects\Rendering\RenderElement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Objects\Rendering\RenderObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\WorldStructure\Generator\TerrainGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -125,12 +119,6 @@
     <ClInclude Include="src\WorldStructure\WorldManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Objects\Rendering\RenderElement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Objects\Rendering\RenderObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -144,8 +132,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\Libraries\x64\bin\FastNoise.dll">
-      <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\Libraries\x86\FastNoise2\bin\FastNoise.dll" />
   </ItemGroup>
 </Project>

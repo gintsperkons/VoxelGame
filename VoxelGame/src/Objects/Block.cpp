@@ -123,7 +123,7 @@ void Block::SetScale(glm::vec3 scale)
 	this->scale = scale;
 }
 
-void Block::ChangeType(std::string type)
+void Block::ChangeType(BlockType type)
 {
 this->type = type;
 }

@@ -9,6 +9,11 @@ class Chunk
 	glm::vec2 chunkPos;
 	bool loaded = false;
 
+
+	static bool OutOfBounds(glm::vec3 pos);
+	void SetBlockLocal(glm::vec3 localPos, Block::BlockType type);
+	std::vector<Block *> renderList;
+
 public:
 	Chunk(glm::vec2 chunkPos);
 	~Chunk();
@@ -25,7 +30,7 @@ public:
 
 	static glm::vec3 ChunkToWorldPos(glm::vec2 chunkPos, glm::vec3 inputPos);
 	static glm::vec3 WorldToChunkBlockPos(glm::vec3 inputPos);
-	static glm::vec3 WorldToChunkPos(glm::vec3 inputPos);
+	static glm::vec2 WorldToChunkCord(glm::vec3 inputPos);
 
 
 

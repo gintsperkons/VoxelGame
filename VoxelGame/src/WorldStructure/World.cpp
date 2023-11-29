@@ -21,15 +21,15 @@ void World::PlayerUpdate(Player * player)
 
 	int playerRenderDistance = player->getRenderDistance();
 	glm::vec3 playerPos = player->getPosition();
-	glm::vec3 centerChunk = Chunk::WorldToChunkPos(playerPos);
+	glm::vec2 centerChunkCord = Chunk::WorldToChunkCord(playerPos);
 
-	std::string chunkId = std::to_string(int(centerChunk.x)) + ":" + std::to_string(int(centerChunk.z));
+	std::string chunkId = std::to_string(int(centerChunkCord.x)) + ":" + std::to_string(int(centerChunkCord.y));
 
 
 	if (loadedChuncks->find(chunkId) == loadedChuncks->end())
 	{
 
-		(*loadedChuncks)[chunkId] = new Chunk(glm::vec2(centerChunk.x, centerChunk.z));
+		(*loadedChuncks)[chunkId] = new Chunk(glm::vec2(centerChunkCord.x, centerChunkCord.y));
 		(*loadedChuncks)[chunkId]->Init();
 	}
 

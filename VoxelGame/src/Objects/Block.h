@@ -12,6 +12,13 @@ class Block: public Mesh
 	bool readyToRender;
 
 public:
+	enum BlockType : unsigned int
+	{
+		Block_Air = 0,
+		Block_Stone = 1,
+	};
+
+
 	Block();
 	~Block();
 
@@ -23,7 +30,10 @@ public:
 	void SetRotation(float angle, glm::vec3 axis);
 	void SetScale(glm::vec3 scale);
 
-	void ChangeType(std::string type);
+	void ChangeType(BlockType type);
+
+	
+
 
 	std::string GetType();
 };
