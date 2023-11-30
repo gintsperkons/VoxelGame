@@ -67,17 +67,22 @@ int main()
 	Text *fpsText = GUI_Manager::GetInstance()->CreateTextElement("debugText");
 	Text *locationText = GUI_Manager::GetInstance()->CreateTextElement("locationText");
 	Text *chunkLocText = GUI_Manager::GetInstance()->CreateTextElement("chunkLocText");
+	Text *hitBlockText = GUI_Manager::GetInstance()->CreateTextElement("HitBlockText");
 	fpsText->SetPadding(5, 5, 5, 5);
 	locationText->SetPadding(5, 5, 5, 5);
 	chunkLocText->SetPadding(5, 5, 5, 5);
+	hitBlockText->SetPadding(5, 5, 5, 5);
 	VerticalLayout *layout = GUI_Manager::GetInstance()->CreateVerticalLayout("testLayout");
 	layout->AddElement(fpsText);
 	layout->AddElement(locationText);
 	layout->AddElement(chunkLocText);
+	layout->AddElement(hitBlockText);
 	GUI_Manager::GetInstance()->AddElement(layout);
 
 	WorldManager::GetInstance()->CreateWorld("testWorld");
 
+
+	
 
 
 	Camera *playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
@@ -147,6 +152,30 @@ int main()
 
 
 		GUI_Manager::GetInstance()->Render();
+
+
+		World::RaycastResult result =  WorldManager::GetInstance()->GetWorld("testWorld")->Raycast(player->getPosition(),playerCamera->GetFront(),1000);
+
+		if (result.hit)
+		{
+			BaseElement *tempEl = GUI_Manager::GetInstance()->GetChild("testLayout")->GetChild("HitBlockText");
+			if (tempEl != nullptr)
+			{
+				Text *tempText = (Text *)tempEl;
+				tempText->SetText(std::to_string(result.block->GetType()) + " x:" + std::to_string(result.position.x) +
+								  " y:" + std::to_string(result.position.y) +
+								  " z:" + std::to_string(result.position.z));
+			}
+		}
+		else
+		{
+			BaseElement *tempEl = GUI_Manager::GetInstance()->GetChild("testLayout")->GetChild("HitBlockText");
+			if (tempEl != nullptr)
+			{
+				Text *tempText = (Text *)tempEl;
+				tempText->SetText("Block not Found");
+			}
+		}
 
 
 		//Swap buffers

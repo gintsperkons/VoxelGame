@@ -4,25 +4,30 @@
 
 class Block: public Mesh
 {
-	glm::vec3 position;
-	glm::vec3 axis;
-	float angle;
-	glm::vec3 scale;
-	std::string type;
-	bool readyToRender;
-
 public:
+
 	enum BlockType : unsigned int
 	{
 		Block_Air = 0,
 		Block_Stone = 1,
 	};
 
+private:
+
+	glm::vec3 position;
+	glm::vec3 axis;
+	float angle;
+	glm::vec3 scale;
+	BlockType type;
+	bool readyToRender;
+
+public:
+
 
 	Block();
 	~Block();
 
-	void Create(glm::vec3 pos, std::string type);
+	void Create(glm::vec3 pos, BlockType type);
 	void CreateGLItems();
 	void Render();
 	void Clear();
@@ -35,6 +40,6 @@ public:
 	
 
 
-	std::string GetType();
+	BlockType GetType();
 };
 

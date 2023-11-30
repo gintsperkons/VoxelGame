@@ -34,7 +34,7 @@ Chunk::Chunk(glm::vec2 chunkPos)
 			for (int z = 0; z < CHUNK_SIZE; z++)
 			{
 				blocks[y][x][z] = new Block();
-				blocks[y][x][z]->Create(ChunkToWorldPos(chunkPos, glm::vec3(x, y, z)), "air");
+				blocks[y][x][z]->Create(ChunkToWorldPos(chunkPos, glm::vec3(x, y, z)), Block::BlockType::Block_Air);
 			}
 		}
 	}
@@ -87,7 +87,9 @@ void Chunk::Update(float deltaTime)
 
 Block *Chunk::GetBlock(glm::vec3 worldPos)
 {
-	if (worldPos.y < 0 || worldPos.y > WORLD_HIGH)
+	
+
+	if (OutOfBounds(WorldToChunkBlockPos(worldPos)))
 	{
 		return nullptr;
 	}

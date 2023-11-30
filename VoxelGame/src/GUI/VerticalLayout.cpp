@@ -11,7 +11,7 @@ VerticalLayout::~VerticalLayout()
 
 void VerticalLayout::AddElement(BaseElement *element)
 {
-	elements.push_back(element);
+	allChildren.push_back(element);
 }
 
 void VerticalLayout::Render()
@@ -19,7 +19,7 @@ void VerticalLayout::Render()
 
 	int totalHeight = 0;
 	totalHeight += padding_top;
-	for (BaseElement *element : elements)
+	for (BaseElement *element : allChildren)
 	{
 		element->space_top = totalHeight;
 		element->Render();

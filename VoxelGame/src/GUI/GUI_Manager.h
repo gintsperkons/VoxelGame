@@ -3,9 +3,8 @@
 #include "VerticalLayout.h"
 #include <vector>
 
-class GUI_Manager
+class GUI_Manager: public BaseElement
 {
-	std::vector<BaseElement*> allElements;
 
 	public:
 		GUI_Manager();

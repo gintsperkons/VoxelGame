@@ -1,11 +1,14 @@
 #pragma once
 #include <GLM/glm.hpp>
 #include <string>
+#include <vector>
 
 class BaseElement
 {
 
 protected:
+	std::vector<BaseElement *> allChildren;
+
 	std::string elementName;
 	int type;
 	glm::vec2 location;
@@ -45,12 +48,15 @@ public:
 	virtual void Clear() = 0;
 	int GetType();
 	virtual glm::vec2 GetBoundingBox();
+	BaseElement* GetChild(std::string name);
+	std::string GetName();
 
 	
 	enum ElementType
 	{
-		TextObj = 0,
-		VLayout = 1
+		GUI_Manager = 0,
+		TextObj = 1,
+		VLayout = 2
 	};
 
 

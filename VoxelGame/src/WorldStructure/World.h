@@ -23,7 +23,8 @@ public:
 	void Update(float deltaTime);
 	void Render();
 	void loadChunk();
-	void GetBlock(glm::vec3 worldPos);
+	Chunk * GetChunk(glm::vec3 worldPos);
+	Block *GetBlock(glm::vec3 worldPos);
 	World::RaycastResult Raycast(glm::vec3 position, glm::vec3 direction, float maxDistance);
 	void Clear();
 	~World();

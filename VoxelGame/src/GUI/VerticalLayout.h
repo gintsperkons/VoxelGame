@@ -5,7 +5,6 @@
 
 class VerticalLayout: public BaseElement
 {
-	std::vector<BaseElement*> elements;
 
 public:
 	VerticalLayout(std::string name);

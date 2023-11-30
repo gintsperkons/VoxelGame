@@ -58,7 +58,7 @@ Block::Block():position(glm::vec3(0.0f, 0.0f, 0.0f)),
 axis(glm::vec3(0.0f, 1.0f, 0.0f)),
 angle(0.0f),
 scale(glm::vec3(1.0f, 1.0f, 1.0f)),
-type("air"),
+type(BlockType::Block_Air()),
 readyToRender(false)
 {
 
@@ -70,7 +70,7 @@ Block::~Block()
 	Clear();
 }
 
-void Block::Create(glm::vec3 pos,std::string type)
+void Block::Create(glm::vec3 pos,BlockType type)
 {
 	this->type = type;
 	this->position = pos;
@@ -128,7 +128,7 @@ void Block::ChangeType(BlockType type)
 this->type = type;
 }
 
-std::string Block::GetType()
+Block::BlockType Block::GetType()
 {
 	return this->type;
 }

@@ -53,3 +53,16 @@ glm::vec2 BaseElement::GetBoundingBox()
 
 	return glm::vec2(w, h);
 }
+BaseElement *BaseElement::GetChild(std::string name)
+{
+	for (BaseElement *element : allChildren)
+	{
+		if (element->GetName() == name)
+			return element;
+	}
+	return nullptr;
+}
+std::string BaseElement::GetName()
+{
+	return elementName;
+}

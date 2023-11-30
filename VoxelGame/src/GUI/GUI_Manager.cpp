@@ -9,7 +9,7 @@ GUI_Manager *GUI_Manager::GetInstance()
 	return instance;
 }
 
-GUI_Manager::GUI_Manager()
+GUI_Manager::GUI_Manager() : BaseElement("GUI_Manager", ElementType::GUI_Manager)
 {}
 
 GUI_Manager::~GUI_Manager()
@@ -19,7 +19,7 @@ Clear();
 
 void GUI_Manager::Render()
 {
-for(BaseElement* element : allElements)
+for(BaseElement* element : allChildren)
 {
 	element->Render();
 }
@@ -27,8 +27,10 @@ for(BaseElement* element : allElements)
 
 void GUI_Manager::AddElement(BaseElement *element)
 {
-	allElements.push_back(element);
+	allChildren.push_back(element);
 }
+
+
 
 
 Text *GUI_Manager::CreateTextElement(std::string name)
@@ -46,10 +48,12 @@ VerticalLayout *GUI_Manager::CreateVerticalLayout(std::string name)
 
 void GUI_Manager::Clear()
 {
-	for (BaseElement *text : allElements)
+	for (BaseElement *text : allChildren)
 	{
 		text->Clear();
 	}
 }
+
+
 
 
