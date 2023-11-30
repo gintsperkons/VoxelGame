@@ -12,6 +12,8 @@ int WORLD_HIGH = 256;
 void Chunk::SetBlockLocal(glm::vec3 localPos, Block::BlockType type)
 {
 	blocks[localPos.y][localPos.x][localPos.z]->ChangeType(type);
+	if(type == Block::BlockType::Block_Air)
+		return;
 	renderList.push_back(blocks[localPos.y][localPos.x][localPos.z]);
 
 }
@@ -87,7 +89,7 @@ void Chunk::Update(float deltaTime)
 
 Block *Chunk::GetBlock(glm::vec3 worldPos)
 {
-	
+
 
 	if (OutOfBounds(WorldToChunkBlockPos(worldPos)))
 	{
@@ -101,7 +103,19 @@ Block *Chunk::GetBlock(glm::vec3 worldPos)
 void Chunk::Render()
 {
 	for (Block *b : renderList)
-	{
+	{	
+		if (b->GetType()== Block::BlockType::Block_Air)
+		{
+			if (b->GetType() == Block::BlockType::Block_Air)
+				return;
+
+			auto i = std::find(renderList.begin(), renderList.end(), b);
+			if (i != renderList.end())
+			{
+				std::cout << "Element found in myvector" << std::endl;
+				renderList.erase(i);
+			}
+		}
 		b->Render();
 	}
 }
@@ -140,6 +154,35 @@ glm::vec3 Chunk::WorldToChunkBlockPos(glm::vec3 worldPos)
 
 	return localPos;
 }
+void Chunk::PlaceBlock(glm::vec3 worldPos, Block::BlockType type)
+{
+	glm::vec3 localPos = WorldToChunkBlockPos(worldPos);
+	if (OutOfBounds(localPos))
+		return;
+	SetBlockLocal(localPos, type);
+	return;
+}
+
+void Chunk::RemoveBlock(glm::vec3 worldPos)
+{
+	glm::vec3 localPos = WorldToChunkBlockPos(worldPos);
+	if (OutOfBounds(localPos))
+		return;
+	Block * b = blocks[localPos.y][localPos.x][localPos.z];
+	if(b->GetType() == Block::BlockType::Block_Air)
+		return;
+
+	auto i = std::find(renderList.begin(), renderList.end(), b);
+	if (i != renderList.end())
+	{
+		std::cout << "Element found in myvector" << std::endl;
+		renderList.erase(i);
+	}
+
+	SetBlockLocal(localPos, Block::BlockType::Block_Air);
+	return;
+}
+
 bool Chunk::OutOfBounds(glm::vec3 pos)
 {
 	if (pos.x >= CHUNK_SIZE || pos.x < 0)

@@ -1,6 +1,8 @@
 #include "Player.h"
 #include <iostream>
 #include "WorldStructure/WorldManager.h"
+#include "GUI/BaseElement.h"
+#include "GUI/GUI_Manager.h"
 
 void Player::updateWorld()
 {
@@ -41,6 +43,42 @@ void Player::updateKeyInput(float deltaTime)
 	{
 		position += camera->GetRight() * velocity;
 	}
+
+	World::RaycastResult result = WorldManager::GetInstance()->GetWorld("testWorld")->Raycast(getPosition(), camera->GetFront(), 5.0f);
+
+	if (result.hit)
+	{
+		
+		BaseElement *tempEl = GUI_Manager::GetInstance()->GetChild("testLayout")->GetChild("HitBlockText");
+		if (tempEl != nullptr)
+		{
+			Text *tempText = (Text *)tempEl;
+			tempText->SetText(std::to_string(result.block->GetType()) + " x:" + std::to_string(result.position.x) +
+							  " y:" + std::to_string(result.position.y) +
+							  " z:" + std::to_string(result.position.z));
+		}
+		if (inputManager->GetKeyPressed(GLFW_MOUSE_BUTTON_1))
+		{
+			std::cout << "Mouse 1" << std::endl;
+			currentWorld->RemoveBlock(result.position + result.normal*-0.5f);
+		}
+		if (inputManager->GetKeyPressed(GLFW_MOUSE_BUTTON_2))
+		{
+			std::cout << "Mouse 2" << std::endl;
+			currentWorld->PlaceBlock(result.position + result.normal * 0.5f, Block::BlockType::Block_Stone);
+		}
+	}
+	else
+	{
+		BaseElement *tempEl = GUI_Manager::GetInstance()->GetChild("testLayout")->GetChild("HitBlockText");
+		if (tempEl != nullptr)
+		{
+			Text *tempText = (Text *)tempEl;
+			tempText->SetText("No Block");
+		}
+	}
+
+	
 
 }
 

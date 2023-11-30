@@ -95,7 +95,6 @@ void Block::Render()
 	model = glm::rotate(model, angle, axis);
 	model = glm::scale(model, scale);
 	shaderManager->SetMat4("model", &model);
-	shaderManager;
 	Mesh::Render();
 
 }
@@ -125,6 +124,8 @@ void Block::SetScale(glm::vec3 scale)
 
 void Block::ChangeType(BlockType type)
 {
+	
+
 this->type = type;
 }
 

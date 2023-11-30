@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\Objects\Line.cpp" />
     <ClCompile Include="src\GUI\BaseElement.cpp" />
     <ClCompile Include="src\GUI\GUI_Manager.cpp" />
     <ClCompile Include="src\WorldStructure\Chunk.cpp" />
@@ -175,6 +177,8 @@
     <ClCompile Include="src\GUI\VerticalLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Math.h" />
+    <ClInclude Include="src\Objects\Line.h" />
     <ClInclude Include="src\GUI\BaseElement.h" />
     <ClInclude Include="src\GUI\GUI_Manager.h" />
     <ClInclude Include="resource.h" />

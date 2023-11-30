@@ -145,7 +145,6 @@ void Text::Render()
 	}
 
 
-	std::cout << "x:" << x << " y:" << y << std::endl;
 
 
 	// iterate through all characters

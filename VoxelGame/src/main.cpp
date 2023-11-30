@@ -20,6 +20,7 @@
 #include "WorldStructure/Generator/TerrainGenerator.h"
 
 #include "GUI/Text.h"
+#include "Objects/Line.h"
 
 
 float deltaTime;
@@ -98,8 +99,9 @@ int main()
 	TextureManager::GetInstance()->UseTexture("andesite");
 	WorldManager::GetInstance()->AddPlayer("testWorld", player);
 
-
-
+	std::vector<Line*> lines;
+	Line* line = new Line(glm::vec3(0, 0, 0), glm::vec3(10, 10, 10), glm::vec3(0, 1, 0));
+	lines.push_back(line);
 
 
 	std::thread worldGenThread(worldGenLoop);
@@ -151,33 +153,23 @@ int main()
 		WorldManager::GetInstance()->Render();
 
 
+
 		GUI_Manager::GetInstance()->Render();
 
 
-		World::RaycastResult result =  WorldManager::GetInstance()->GetWorld("testWorld")->Raycast(player->getPosition(),playerCamera->GetFront(),1000);
+	
 
-		if (result.hit)
-		{
-			BaseElement *tempEl = GUI_Manager::GetInstance()->GetChild("testLayout")->GetChild("HitBlockText");
-			if (tempEl != nullptr)
-			{
-				Text *tempText = (Text *)tempEl;
-				tempText->SetText(std::to_string(result.block->GetType()) + " x:" + std::to_string(result.position.x) +
-								  " y:" + std::to_string(result.position.y) +
-								  " z:" + std::to_string(result.position.z));
-			}
-		}
-		else
-		{
-			BaseElement *tempEl = GUI_Manager::GetInstance()->GetChild("testLayout")->GetChild("HitBlockText");
-			if (tempEl != nullptr)
-			{
-				Text *tempText = (Text *)tempEl;
-				tempText->SetText("Block not Found");
-			}
-		}
+	
 
 
+		ShaderManager::GetInstance()->UseShader("line");
+		ShaderManager::GetInstance()->SetMat4("projection", &projection);
+		ShaderManager::GetInstance()->SetMat4("view", &view);
+
+		for(Line *l : lines)
+			l->Render();
+
+		
 		//Swap buffers
 		WindowManager::GetInstance()->SwapBuffers();
 		//Clear
@@ -191,6 +183,10 @@ int main()
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		delete meshList[i];
+	}
+	for (int i = 0; i < lines.size(); i++)
+	{
+		delete lines[i];
 	}
 	delete WindowManager::GetInstance();
 	delete InputManager::GetInstance();
