@@ -40,6 +40,8 @@
 * [GLM](GLMLink)
 * [GLAD](GLADLink)
 * [GLFW](GLFWLink)
+* [FastNoise](FastNoiseLink)
+* [freetype](freetypeLink)
 
 #### Graphics interface
 * [OpenGL](OpenGLLink)
@@ -50,14 +52,20 @@
 - Visual Studio 2022
 
 ### Installation
+
+1. Clone the repo
+
 ## Usage
+
+Lauch the .sln file.
+
 ## Roadmap
 
 ###v0.1
-- [ ] make generation
-- [ ] make world data structure
-- [ ] make block placement
-- [ ] make block remove
+- [x] make generation
+- [x] make world data structure
+- [x] make block placement
+- [x] make block remove
 
 ## Contributing
 ## License
@@ -81,6 +89,8 @@ Project Link: [https://github.com/gintsperkons/VoxelGame](ProjectLink)
 [LearnOpenGLLink]:https://learnopengl.com/
 [OpenGLTutorialLink]:http://www.opengl-tutorial.org
 
+[FastNoiseLink]:https://github.com/Auburn/FastNoise2/
+[freetypeLink]:http://freetype.org
 [GLMLink]:https://github.com/g-truc/glm
 [GLADLink]:https://glad.dav1d.de
 [GLFWLink]:https://www.glfw.org
