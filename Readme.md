@@ -34,7 +34,7 @@
 
 #### Software
 
-* Visual Studio 2021
+* Visual Studio 2022
 
 #### Libreries
 * [GLM](GLMLink)
