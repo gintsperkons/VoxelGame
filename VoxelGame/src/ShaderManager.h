@@ -24,6 +24,8 @@ public:
 
 	void UseShader(std::string shaderName);
 	void SetMat4(std::string type, glm::mat4 *matrix);
+	void SetUniform3(std::string type, glm::vec3 *vector);
+	void SetUniform1(std::string type, float value);
 	bool uniformExists(std::string uniformName);
 	void ClearShaderList();
 	~ShaderManager();

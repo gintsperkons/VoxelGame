@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,7 +115,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,7 +129,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,10 +147,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;FastNoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;FastNoise.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\GUI\BaseElement.cpp" />
+    <ClCompile Include="src\GUI\GUI_Manager.cpp" />
     <ClCompile Include="src\WorldStructure\Chunk.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\SkyBox.cpp" />
@@ -169,8 +171,12 @@
     <ClCompile Include="src\WorldStructure\World.cpp" />
     <ClCompile Include="src\WorldStructure\WorldManager.cpp" />
     <ClCompile Include="src\WorldStructure\Generator\TerrainGenerator.cpp" />
+    <ClCompile Include="src\GUI\Text.cpp" />
+    <ClCompile Include="src\GUI\VerticalLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GUI\BaseElement.h" />
+    <ClInclude Include="src\GUI\GUI_Manager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\WorldStructure\Chunk.h" />
     <ClInclude Include="src\Objects\Block.h" />
@@ -189,12 +195,21 @@
     <ClInclude Include="src\WorldStructure\World.h" />
     <ClInclude Include="src\WorldStructure\WorldManager.h" />
     <ClInclude Include="src\WorldStructure\Generator\TerrainGenerator.h" />
+    <ClInclude Include="src\GUI\Text.h" />
+    <ClInclude Include="src\GUI\VerticalLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VoxelGame.rc" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\Libraries\x86\FastNoise2\bin\FastNoise.dll">
+    <CopyFileToFolders Include="..\Libraries\x64\bin\FastNoise.dll">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <FileType>Document</FileType>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\Libraries\x64\bin\freetype.dll">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <FileType>Document</FileType>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>

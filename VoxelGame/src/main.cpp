@@ -13,14 +13,17 @@
 #include "SkyBox.h"
 #include "Camera.h"
 #include "Player.h"
+#include "GUI/GUI_Manager.h"
 #include <GLM/glm.hpp>
 #include <GLM\gtc\matrix_transform.hpp>
 #include <thread>
 #include "WorldStructure/Generator/TerrainGenerator.h"
 
+#include "GUI/Text.h"
+
 
 float deltaTime;
-Player* player;
+Player *player;
 
 
 
@@ -28,21 +31,20 @@ Player* player;
 
 
 
-std::vector<Block*> meshList;
+std::vector<Block *> meshList;
 
 
 
 void renderLoop()
-{
-}
+{}
 
 
 void worldGenLoop()
 {
 	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
 	{
-			WorldManager::GetInstance()->Update(deltaTime);
-			player->updateWorld();
+		WorldManager::GetInstance()->Update(deltaTime);
+		player->updateWorld();
 	}
 }
 
@@ -50,17 +52,29 @@ void worldGenLoop()
 
 int main()
 {
-	
+
 	InputManager::GetInstance();
 	WindowManager::GetInstance();
 	ShaderManager::GetInstance();
 	TextureManager::GetInstance();
+	GUI_Manager::GetInstance();
 	SkyBox::GetInstance();
 	WorldManager::GetInstance();
 	InputManager::GetInstance()->Init();
 	SkyBox::GetInstance()->Create();
 
-
+	//create gui elements
+	Text *fpsText = GUI_Manager::GetInstance()->CreateTextElement("debugText");
+	Text *locationText = GUI_Manager::GetInstance()->CreateTextElement("locationText");
+	Text *chunkLocText = GUI_Manager::GetInstance()->CreateTextElement("chunkLocText");
+	fpsText->SetPadding(5, 5, 5, 5);
+	locationText->SetPadding(5, 5, 5, 5);
+	chunkLocText->SetPadding(5, 5, 5, 5);
+	VerticalLayout *layout = GUI_Manager::GetInstance()->CreateVerticalLayout("testLayout");
+	layout->AddElement(fpsText);
+	layout->AddElement(locationText);
+	layout->AddElement(chunkLocText);
+	GUI_Manager::GetInstance()->AddElement(layout);
 
 	WorldManager::GetInstance()->CreateWorld("testWorld");
 
@@ -77,10 +91,8 @@ int main()
 
 	ShaderManager::GetInstance()->UseShader("solid");
 	TextureManager::GetInstance()->UseTexture("andesite");
-	WorldManager::GetInstance()->AddPlayer("testWorld",player);
+	WorldManager::GetInstance()->AddPlayer("testWorld", player);
 
-
-	
 
 
 
@@ -96,6 +108,15 @@ int main()
 		lastFrame = currentFrame;
 		float fps = 1.0f / deltaTime;
 
+		glm::vec3 pos = player->getPosition();
+		glm::vec2 currChunk = Chunk::WorldToChunkCord(pos);
+
+		fpsText->SetText(std::to_string((int)round(fps)) + " fps");
+		locationText->SetText("x:" + std::to_string(pos.x) + " y:" + std::to_string(pos.y) + " z:" + std::to_string(pos.z));
+		chunkLocText->SetText("chunkX:" + std::to_string((int)currChunk.x) + " chunkZ:" + std::to_string((int)currChunk.y));
+
+		TextureManager::GetInstance()->UseTexture("andesite");
+		ShaderManager::GetInstance()->UseShader("solid");
 
 
 
@@ -107,14 +128,11 @@ int main()
 
 
 
-		
-
 
 		glm::mat4 projection = glm::perspective(glm::radians(90.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
 		glm::mat4 view = playerCamera->getViewMatrix();
-		ShaderManager::GetInstance()->SetMat4("projection",&projection);
-		ShaderManager::GetInstance()->SetMat4("view",&view);
-
+		ShaderManager::GetInstance()->SetMat4("projection", &projection);
+		ShaderManager::GetInstance()->SetMat4("view", &view);
 
 
 		//Draw sky
@@ -123,12 +141,12 @@ int main()
 		//Draw else
 
 
-
-		ShaderManager::GetInstance()->UseShader("solid");
 		TextureManager::GetInstance()->UseTexture("andesite");
+		ShaderManager::GetInstance()->UseShader("solid");
 		WorldManager::GetInstance()->Render();
 
-		
+
+		GUI_Manager::GetInstance()->Render();
 
 
 		//Swap buffers
@@ -151,6 +169,7 @@ int main()
 	delete TextureManager::GetInstance();
 	delete SkyBox::GetInstance();
 	delete WorldManager::GetInstance();
+	delete GUI_Manager::GetInstance();
 	delete playerCamera;
 	delete player;
 

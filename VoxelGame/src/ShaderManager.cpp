@@ -132,6 +132,26 @@ void ShaderManager::SetMat4(std::string type, glm::mat4 *matrix)
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(*matrix));
 }
 
+void ShaderManager::SetUniform3(std::string type, glm::vec3 *vector)
+{
+	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
+	if (uniformLocation == -1)
+	{
+		std::cout << "Uniform not found: " << type << std::endl;
+	}
+	glUniform3f(uniformLocation, vector->x, vector->y, vector->z);
+}
+
+void ShaderManager::SetUniform1(std::string type, float value)
+{
+	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
+	if (uniformLocation == -1)
+	{
+		std::cout << "Uniform not found: " << type << std::endl;
+	}
+	glUniform1f(uniformLocation, value);
+}
+
 bool ShaderManager::uniformExists(std::string uniformName)
 {
 	return glGetUniformLocation(currentShader->GetShaderID(), uniformName.c_str()) < 0;

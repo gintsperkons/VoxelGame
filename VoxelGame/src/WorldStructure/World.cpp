@@ -72,6 +72,20 @@ void World::loadChunk()
 	
 }
 
+void World::GetBlock(glm::vec3 worldPos)
+{
+	//TODO: get block
+}
+
+World::RaycastResult World::Raycast(glm::vec3 position, glm::vec3 direction, float maxDistance)
+{
+	direction = glm::normalize(direction);
+	//TODO: Raycast return block result
+	RaycastResult result;
+
+	return World::RaycastResult();
+}
+
 void World::Clear()
 {
 	for (auto& chunk : *loadedChuncks)

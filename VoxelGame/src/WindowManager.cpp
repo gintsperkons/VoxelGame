@@ -157,6 +157,7 @@ inputManager(InputManager::GetInstance())
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
 	glEnable(GL_DEPTH_TEST);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	//Tell OpenGL the size of the rendering window
 

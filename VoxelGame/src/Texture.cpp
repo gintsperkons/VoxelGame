@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Texture.h"
 #include <GLAD/glad.h>
+#include "ShaderManager.h"
 
 Texture::Texture(): texture(0), width(0), height(0), nrChannels(0), error(false), name("test")
 {
@@ -36,6 +37,7 @@ void Texture::Create(std::string imagePath, std::string textureName,int type)
 
 void Texture::Use()
 {
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
 }
 

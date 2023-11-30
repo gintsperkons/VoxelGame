@@ -64,8 +64,11 @@ void TextureManager::SetSkyMapTexture()
 void TextureManager::UseTexture(std::string textureName)
 {	
 	//if texture is already in use then return
-	if (currentTexture!= nullptr && currentTexture->GetName() == textureName)
+	if (currentTexture != nullptr && currentTexture->GetName() == textureName)
+	{
+		textureList[textureName]->Use();
 		return;
+	}
 	//if texture is in list then use it
 	if (textureList.find(textureName) != textureList.end())
 	{

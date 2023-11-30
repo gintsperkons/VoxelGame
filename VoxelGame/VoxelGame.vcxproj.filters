@@ -69,6 +69,18 @@
     <ClCompile Include="src\WorldStructure\Generator\TerrainGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\GUI_Manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\BaseElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\VerticalLayout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WindowManager.h">
@@ -125,6 +137,18 @@
     <ClInclude Include="src\WorldStructure\Generator\TerrainGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GUI\GUI_Manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\BaseElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\VerticalLayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VoxelGame.rc">
@@ -132,6 +156,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\Libraries\x86\FastNoise2\bin\FastNoise.dll" />
+    <CopyFileToFolders Include="..\Libraries\x64\bin\FastNoise.dll" />
+    <CopyFileToFolders Include="..\Libraries\x64\bin\freetype.dll" />
   </ItemGroup>
 </Project>
