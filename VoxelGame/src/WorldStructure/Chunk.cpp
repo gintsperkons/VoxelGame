@@ -106,15 +106,9 @@ void Chunk::Render()
 	{	
 		if (b->GetType()== Block::BlockType::Block_Air)
 		{
-			if (b->GetType() == Block::BlockType::Block_Air)
-				return;
-
 			auto i = std::find(renderList.begin(), renderList.end(), b);
 			if (i != renderList.end())
-			{
-				std::cout << "Element found in myvector" << std::endl;
 				renderList.erase(i);
-			}
 		}
 		b->Render();
 	}
@@ -174,10 +168,7 @@ void Chunk::RemoveBlock(glm::vec3 worldPos)
 
 	auto i = std::find(renderList.begin(), renderList.end(), b);
 	if (i != renderList.end())
-	{
-		std::cout << "Element found in myvector" << std::endl;
 		renderList.erase(i);
-	}
 
 	SetBlockLocal(localPos, Block::BlockType::Block_Air);
 	return;
