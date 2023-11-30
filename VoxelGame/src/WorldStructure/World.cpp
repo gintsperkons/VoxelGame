@@ -29,25 +29,56 @@ void World::PlayerUpdate(Player *player)
 
 	if (loadedChuncks->find(chunkId) == loadedChuncks->end())
 	{
-
 		(*loadedChuncks)[chunkId] = new Chunk(glm::vec2(centerChunkCord.x, centerChunkCord.y));
 		(*loadedChuncks)[chunkId]->Init();
 	}
 
+	for (int x = -playerRenderDistance; x <= playerRenderDistance; x++)
+	{
+		for (int z = -playerRenderDistance; z <= playerRenderDistance; z++)
+		{
+			glm::vec2 chunkCord = glm::vec2(centerChunkCord.x + x, centerChunkCord.y + z);
+			std::string chunkId = std::to_string(int(chunkCord.x)) + ":" + std::to_string(int(chunkCord.y));
+			if (loadedChuncks->find(chunkId) == loadedChuncks->end())
+			{
+				(*loadedChuncks)[chunkId] = new Chunk(glm::vec2(chunkCord.x, chunkCord.y));
+				(*loadedChuncks)[chunkId]->Init();
+			}
+		}
+	}
+
+	
+	std::vector<std::string> toRemove;
+
 
 	for (auto &chunk : *loadedChuncks)
 	{
-		//std::cout << chunk.first << std::endl;
+		if (!chunk.second->InRenderDistance(centerChunkCord,playerRenderDistance))
+		{
+			chunk.second->Unload();
+			toRemove.push_back(chunk.first);
+		}
+		else
+		{
+			auto i = std::find(toRemove.begin(), toRemove.end(), chunk.first);
+			if (i != toRemove.end())
+			{
+				
+				toRemove.erase(i);
+
+			}
+			chunk.second->Load();
+		}
 	}
 
-	//test block Getter 
-	if (loadedChuncks->find(chunkId) != loadedChuncks->end())
+	for (auto &chunk : toRemove)
 	{
-		Block *block = (*loadedChuncks)[chunkId]->GetBlock(player->getPosition());
-		if (block != nullptr)
+		if (loadedChuncks->find(chunkId) != loadedChuncks->end())
 		{
-			//std::cout << block->GetType() << std::endl;
 		}
+		delete (*loadedChuncks)[chunk];
+
+		loadedChuncks->erase(chunk);
 	}
 }
 

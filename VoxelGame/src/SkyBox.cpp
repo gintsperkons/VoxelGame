@@ -11,12 +11,12 @@
 
 std::vector<std::string> faces
 {
-		"right.jpg",
-		"left.jpg",
-		"top.jpg",
-		"bottom.jpg",
-		"front.jpg",
-		"back.jpg"
+		"right.png",
+		"left.png",
+		"top.png",
+		"bottom.png",
+		"front.png",
+		"back.png"
 };
 
 // Mesh Setup

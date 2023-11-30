@@ -29,11 +29,15 @@ public:
 
 	void PlaceBlock(glm::vec3 worldPos, Block::BlockType type);
 	void RemoveBlock(glm::vec3 worldPos);
+	void Unload();
+	void Load();
+	bool InRenderDistance(glm::vec2 centerChunkCords,int renderDistance);
 
 	static bool OutOfBounds(glm::vec3 pos);
 	static glm::vec3 ChunkToWorldPos(glm::vec2 chunkPos, glm::vec3 inputPos);
 	static glm::vec3 WorldToChunkBlockPos(glm::vec3 inputPos);
 	static glm::vec2 WorldToChunkCord(glm::vec3 inputPos);
+
 
 
 

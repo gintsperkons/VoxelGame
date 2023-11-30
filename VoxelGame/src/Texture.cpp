@@ -27,8 +27,12 @@ void Texture::Create(std::string imagePath, std::string textureName,int type)
         if (type == GL_TEXTURE_2D)
             glGenerateMipmap(GL_TEXTURE_2D);
     }
+
     else
     {
+        // get image from reacource
+
+
         error = true;
         std::cout << "Failed to load texture " << textureName << std::endl;
     }

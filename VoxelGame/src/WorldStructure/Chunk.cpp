@@ -50,7 +50,6 @@ Chunk::~Chunk()
 
 void Chunk::Init()
 {
-	std::cout << "Chunk Init" << std::endl;
 
 	glm::vec3 chunkStart = ChunkToWorldPos(chunkPos, glm::vec3(0, 0, 0));
 	std::vector<std::vector<float>> result = TerrainGenerator::GetInstance()->GenerateChunkSurface(chunkStart.x, chunkStart.z, CHUNK_SIZE, CHUNK_SIZE, 0);
@@ -172,6 +171,32 @@ void Chunk::RemoveBlock(glm::vec3 worldPos)
 
 	SetBlockLocal(localPos, Block::BlockType::Block_Air);
 	return;
+}
+
+void Chunk::Unload()
+{
+	loaded = false;
+}
+
+void Chunk::Load()
+{
+	loaded = true;
+}
+
+bool Chunk::InRenderDistance(glm::vec2 centerChunkCords, int renderDistance)
+{
+	if ((chunkPos.x <= centerChunkCords.x + renderDistance && chunkPos.x >= centerChunkCords.x - renderDistance)
+		&&
+		(chunkPos.y <= centerChunkCords.y + renderDistance && chunkPos.y >= centerChunkCords.y - renderDistance))
+	{
+
+    		return true;
+	}
+	if (loaded)
+	{
+		return false;
+	}
+	return false;
 }
 
 bool Chunk::OutOfBounds(glm::vec3 pos)

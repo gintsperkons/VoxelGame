@@ -170,5 +170,47 @@
   <ItemGroup>
     <CopyFileToFolders Include="..\Libraries\x64\bin\FastNoise.dll" />
     <CopyFileToFolders Include="..\Libraries\x64\bin\freetype.dll" />
+    <CopyFileToFolders Include="Textures\skybox\top.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\skybox\back.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\skybox\bottom.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\skybox\front.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\skybox\left.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\skybox\right.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\gray_stained_glass.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\andesite.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\cubemaps_skybox.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\default.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Textures\glass.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Shaders\line.frag" />
+    <CopyFileToFolders Include="Shaders\line.vert" />
+    <CopyFileToFolders Include="Shaders\skyBox.frag" />
+    <CopyFileToFolders Include="Shaders\skyBox.vert" />
+    <CopyFileToFolders Include="Shaders\solid.frag" />
+    <CopyFileToFolders Include="Shaders\solid.vert" />
+    <CopyFileToFolders Include="Shaders\text.frag" />
+    <CopyFileToFolders Include="Shaders\text.vert" />
+    <CopyFileToFolders Include="fonts\arial.ttf" />
   </ItemGroup>
 </Project>

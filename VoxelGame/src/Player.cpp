@@ -44,7 +44,7 @@ void Player::updateKeyInput(float deltaTime)
 		position += camera->GetRight() * velocity;
 	}
 
-	World::RaycastResult result = WorldManager::GetInstance()->GetWorld("testWorld")->Raycast(getPosition(), camera->GetFront(), 5.0f);
+	World::RaycastResult result = WorldManager::GetInstance()->GetWorld("testWorld")->Raycast(getPosition(), camera->GetFront(), 10.0f);
 
 	if (result.hit)
 	{

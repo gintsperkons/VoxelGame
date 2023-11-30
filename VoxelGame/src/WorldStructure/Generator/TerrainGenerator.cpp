@@ -27,12 +27,6 @@ std::vector<std::vector<float>> TerrainGenerator::GenerateChunkSurface(int xStar
 	chunkSurface.clear();
 	chunkSurface = std::vector<std::vector<float>>(0);
 
-
-	std ::cout << "xStart: " << xStart << std::endl;
-	std::cout << "yStart: " << yStart << std::endl;
-	std::cout << "seed: " << seed << std::endl;
-
-
 	fnSurfaceNoise->GenUniformGrid2D(surfaceNoiseOutput.data(), xStart, yStart, xSize, ySize, 0.01f,seed);
 
 

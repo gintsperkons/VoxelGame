@@ -86,7 +86,7 @@ int main()
 	
 
 
-	Camera *playerCamera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+	Camera *playerCamera = new Camera(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f);
 	player = new Player(playerCamera, InputManager::GetInstance(), 5, 0.1);
 	player->ChangeWorld("testWorld");
 
@@ -99,9 +99,6 @@ int main()
 	TextureManager::GetInstance()->UseTexture("andesite");
 	WorldManager::GetInstance()->AddPlayer("testWorld", player);
 
-	std::vector<Line*> lines;
-	Line* line = new Line(glm::vec3(0, 0, 0), glm::vec3(10, 10, 10), glm::vec3(0, 1, 0));
-	lines.push_back(line);
 
 
 	std::thread worldGenThread(worldGenLoop);
@@ -166,8 +163,6 @@ int main()
 		ShaderManager::GetInstance()->SetMat4("projection", &projection);
 		ShaderManager::GetInstance()->SetMat4("view", &view);
 
-		for(Line *l : lines)
-			l->Render();
 
 		
 		//Swap buffers
@@ -183,10 +178,6 @@ int main()
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		delete meshList[i];
-	}
-	for (int i = 0; i < lines.size(); i++)
-	{
-		delete lines[i];
 	}
 	delete WindowManager::GetInstance();
 	delete InputManager::GetInstance();
