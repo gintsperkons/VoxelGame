@@ -16,7 +16,6 @@ public:
 
 void CreateTexture(std::string fileName);
 void UseTexture(std::string textureName);
-void SetSkyMapTexture();
 void ClearTextureList();
 
 ~TextureManager();

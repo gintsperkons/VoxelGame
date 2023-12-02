@@ -4,19 +4,23 @@
 #include "InputManager.h"
 #include "WindowManager.h"
 
-
-static InputManager* instance = nullptr;
-InputManager* InputManager::GetInstance()
+// Singleton instance of InputManager class (only one instance of InputManager can exist) 
+static InputManager *instance = nullptr;
+InputManager *InputManager::GetInstance()
 {
 	if (instance == nullptr)
 		instance = new InputManager();
 	return instance;
 }
 
+// Callbacks for GLFW events (static functions) 
+//keyboard callback function 
 void InputManager::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-	InputManager* input = static_cast<WindowManager*>(glfwGetWindowUserPointer(window))->GetInputManager();
+	//gets the input manager from the window
+	InputManager *input = static_cast<WindowManager *>(glfwGetWindowUserPointer(window))->GetInputManager();
 
+	//sets the key state to pressed or released
 	switch (action)
 	{
 	case GLFW_PRESS:
@@ -28,36 +32,43 @@ void InputManager::KeyCallback(GLFWwindow *window, int key, int scancode, int ac
 	}
 }
 
+//mouse callback function
 void InputManager::MouseCallback(GLFWwindow *window, double xpos, double ypos)
 {
+	//gets the input manager from the window and sets the mouse position
 	InputManager *input = static_cast<WindowManager *>(glfwGetWindowUserPointer(window))->GetInputManager();
 	input->mousePosition = glm::vec2(xpos, ypos);
 }
 
+//mouse button callback function
 void InputManager::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 {
+	//gets the input manager from the window and calls the key callback function
 	InputManager *input = static_cast<WindowManager *>(glfwGetWindowUserPointer(window))->GetInputManager();
 	KeyCallback(window, button, 0, action, mods);
 }
 
+//scroll callback function
 void InputManager::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
 {
+	//gets the input manager from the window and sets the scroll value
 	InputManager *input = static_cast<WindowManager *>(glfwGetWindowUserPointer(window))->GetInputManager();
 	input->scroll = (float)yoffset;
 }
 
 
-
+// Update function
 void InputManager::Update()
 {
+	// Reset scroll value and previous mouse position
 	scroll = 0.0f;
 	prevMousePosition = mousePosition;
-
+	// Update key states (pressed, held, released) and poll events
 	UpdateKeyStates();
 	glfwPollEvents();
 }
 
-
+// Update key states (pressed >> held, released >> up)
 void InputManager::UpdateKeyStates()
 {
 	for (auto it = keyStates.begin(); it != keyStates.end(); it++)
@@ -73,22 +84,17 @@ void InputManager::UpdateKeyStates()
 
 
 
-InputManager::InputManager()
-{
-	
-}
-
 void InputManager::Init()
 {
 	double xPos, yPos;
-	// Get mouse position
+	// Get mouse position and set previous mouse position
 	glfwGetCursorPos(glfwGetCurrentContext(), &xPos, &yPos);
 	mousePosition = glm::vec2(xPos, yPos);
 	prevMousePosition = mousePosition;
 
 
 
-
+	// Set callbacks for GLFW events (keyboard, mouse, scroll)
 	glfwSetKeyCallback(glfwGetCurrentContext(), &InputManager::KeyCallback);
 	glfwSetCursorPosCallback(glfwGetCurrentContext(), &InputManager::MouseCallback);
 	glfwSetMouseButtonCallback(glfwGetCurrentContext(), &InputManager::MouseButtonCallback);
@@ -101,7 +107,7 @@ InputManager::~InputManager()
 
 
 
-
+// Getters for key states, mouse position cahnge, scroll value
 bool InputManager::GetKeyPressed(int key)
 {
 	return keyStates[key] == KEY_PRESSED;

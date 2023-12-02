@@ -6,7 +6,6 @@ class Mesh
 	unsigned int VAO, VBO, IBO;
 	int indexCount;
 	
-
 	protected:
 		ShaderManager *shaderManager;
 		glm::mat4 model;

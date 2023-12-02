@@ -1,5 +1,4 @@
 #include "Block.h"
-#include <iostream>
 static float vertices[] = {
 // positions          // colors           // texture coords
 	//back
@@ -34,6 +33,7 @@ static float vertices[] = {
  0.0f,  0.0f, 1.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f
 };
 static unsigned int indices[] = {  // note that we start from 0!
+	//triangle coners from vertices row is index
 	0, 2, 1,
 	0, 3, 2,
 
@@ -54,7 +54,7 @@ static unsigned int indices[] = {  // note that we start from 0!
 };
 
 
-Block::Block():position(glm::vec3(0.0f, 0.0f, 0.0f)),
+Block::Block() :position(glm::vec3(0.0f, 0.0f, 0.0f)),
 axis(glm::vec3(0.0f, 1.0f, 0.0f)),
 angle(0.0f),
 scale(glm::vec3(1.0f, 1.0f, 1.0f)),
@@ -70,21 +70,25 @@ Block::~Block()
 	Clear();
 }
 
-void Block::Create(glm::vec3 pos,BlockType type)
+//create block with position and type 
+void Block::Create(glm::vec3 pos, BlockType type)
 {
 	this->type = type;
 	this->position = pos;
 	readyToRender = false;
 }
 
+//create gl items for block 
 void Block::CreateGLItems()
 {
 	Mesh::Create(vertices, indices, 192, 36);
 	readyToRender = true;
 }
 
+//render block
 void Block::Render()
 {
+	//if block is not ready to render create gl items
 	if (!readyToRender)
 	{
 		CreateGLItems();
@@ -94,42 +98,45 @@ void Block::Render()
 	model = glm::translate(model, position);
 	model = glm::rotate(model, angle, axis);
 	model = glm::scale(model, scale);
+	//set model matrix to active shader and render blocks mesh
 	shaderManager->SetMat4("model", &model);
 	Mesh::Render();
 
 }
 
+//clear blocks data
 void Block::Clear()
 {
-	
-
 	Mesh::Clear();
 }
 
+//move block
 void Block::Move(glm::vec3 position)
 {
-	this->position+= position;
+	this->position += position;
 }
 
+//set rotation for block
 void Block::SetRotation(float angle, glm::vec3 axis)
 {
 	this->angle = angle;
 	this->axis = axis;
 }
 
+//set scale for block
 void Block::SetScale(glm::vec3 scale)
 {
 	this->scale = scale;
 }
 
+//change block type
 void Block::ChangeType(BlockType type)
 {
-	
-
-this->type = type;
+	this->type = type;
 }
 
+// get block type
 Block::BlockType Block::GetType()
 {
-	return this->type;
+	return BlockType(this->type);
 }

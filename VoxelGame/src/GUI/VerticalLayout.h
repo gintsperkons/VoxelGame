@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseElement.h"
-#include <vector>
 #include <string>
 
 class VerticalLayout: public BaseElement

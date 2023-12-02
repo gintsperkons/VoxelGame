@@ -3,6 +3,7 @@
 #include "WindowManager.h"
 #include "InputManager.h"
 
+//singleton instance of the window manager 
 static WindowManager *instance = nullptr;
 WindowManager *WindowManager::GetInstance()
 {
@@ -11,6 +12,7 @@ WindowManager *WindowManager::GetInstance()
 	return instance;
 }
 
+//callback for when the window is resized
 void WindowManager::ResizeCallback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -18,6 +20,7 @@ void WindowManager::ResizeCallback(GLFWwindow *window, int width, int height)
 	glfwGetFramebufferSize(window, &wm->bufferWidth, &wm->bufferHeight);
 }
 
+//changes the polygon mode between fill and line
 void WindowManager::ChangePolygonMode()
 {
 	int polygonMode;
@@ -34,6 +37,7 @@ void WindowManager::ChangePolygonMode()
 	}
 }
 
+//changes the window to fullscreen or windowed
 void WindowManager::ChangeFullscreen()
 {
 	fullscreen = !fullscreen;
@@ -78,16 +82,19 @@ void WindowManager::Clear()
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
+//swaps the front and back buffers
 void WindowManager::SwapBuffers()
 {
 	glfwSwapBuffers(this->window);
 }
 
+//returns true if the window should close
 bool WindowManager::ShouldClose()
 {
 	return glfwWindowShouldClose(this->window);
 }
 
+//updates the window and key events
 void WindowManager::Update()
 {
 	if (inputManager->GetKeyPressed(GLFW_KEY_ESCAPE))
@@ -166,7 +173,7 @@ inputManager(InputManager::GetInstance())
 	glfwGetFramebufferSize(window, &bufferWidth, &bufferHeight);
 }
 
-
+//returns true if the window is fullscreen
 bool WindowManager::IsFullscreen()
 {
 	return glfwGetWindowMonitor(window) != nullptr;

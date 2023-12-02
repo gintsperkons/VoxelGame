@@ -2,26 +2,23 @@
 #include "Mesh.h"
 #include <GLM/glm.hpp>
 
-class Block: public Mesh
+class Block : public Mesh
 {
-public:
-
-	enum BlockType : unsigned int
-	{
-		Block_Air = 0,
-		Block_Stone = 1,
-	};
-
-private:
 
 	glm::vec3 position;
 	glm::vec3 axis;
 	float angle;
 	glm::vec3 scale;
-	BlockType type;
+	unsigned int type;
 	bool readyToRender;
 
 public:
+	//All block types
+	enum BlockType : unsigned int
+	{
+		Block_Air = 0,
+		Block_Stone = 1,
+	};
 
 
 	Block();
@@ -37,7 +34,7 @@ public:
 
 	void ChangeType(BlockType type);
 
-	
+
 
 
 	BlockType GetType();

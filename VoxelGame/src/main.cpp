@@ -25,35 +25,17 @@
 
 float deltaTime;
 Player *player;
-
-
-
-
-
-
-
 std::vector<Block *> meshList;
 
 
 
-void renderLoop()
-{}
 
-
-void worldGenLoop()
-{
-	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
-	{
-		WorldManager::GetInstance()->Update(deltaTime);
-		player->updateWorld();
-	}
-}
 
 
 
 int main()
 {
-
+	//Init
 	InputManager::GetInstance();
 	WindowManager::GetInstance();
 	ShaderManager::GetInstance();
@@ -64,7 +46,7 @@ int main()
 	InputManager::GetInstance()->Init();
 	SkyBox::GetInstance()->Create();
 
-	//create gui elements
+	//create gui elements and add to gui manager
 	Text *fpsText = GUI_Manager::GetInstance()->CreateTextElement("debugText");
 	Text *locationText = GUI_Manager::GetInstance()->CreateTextElement("locationText");
 	Text *chunkLocText = GUI_Manager::GetInstance()->CreateTextElement("chunkLocText");
@@ -80,61 +62,66 @@ int main()
 	layout->AddElement(hitBlockText);
 	GUI_Manager::GetInstance()->AddElement(layout);
 
+	//create world
 	WorldManager::GetInstance()->CreateWorld("testWorld");
 
 
 	
 
-
+	//create player and camera and adds player to world
 	Camera *playerCamera = new Camera(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f);
 	player = new Player(playerCamera, InputManager::GetInstance(), 5, 0.1);
 	player->ChangeWorld("testWorld");
 
 
-
+	//set initial delta time last frame
 	float lastFrame = 0.0f;
 
-
+	//sets initial texture and shader
 	ShaderManager::GetInstance()->UseShader("solid");
 	TextureManager::GetInstance()->UseTexture("andesite");
 	WorldManager::GetInstance()->AddPlayer("testWorld", player);
 
 
 
-	std::thread worldGenThread(worldGenLoop);
 
 	//Game loop
 	while (!glfwWindowShouldClose(WindowManager::GetInstance()->GetWindow()))
 	{
-		//Delta time
+		//Delta time calculations
 		float currentFrame = (float)glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		float fps = 1.0f / deltaTime;
 
+		//gets new values for gui
+		float fps = 1.0f / deltaTime;
 		glm::vec3 pos = player->getPosition();
 		glm::vec2 currChunk = Chunk::WorldToChunkCord(pos);
 
+		//Update GUI text
 		fpsText->SetText(std::to_string((int)round(fps)) + " fps");
 		locationText->SetText("x:" + std::to_string(pos.x) + " y:" + std::to_string(pos.y) + " z:" + std::to_string(pos.z));
 		chunkLocText->SetText("chunkX:" + std::to_string((int)currChunk.x) + " chunkZ:" + std::to_string((int)currChunk.y));
 
+		//set texture and shader
 		TextureManager::GetInstance()->UseTexture("andesite");
 		ShaderManager::GetInstance()->UseShader("solid");
 
 
-
-		//Updates
+		 
+		//Updates for input and window
 		InputManager::GetInstance()->Update();
 		WindowManager::GetInstance()->Update();
 
+		//Update player 
 		player->update(deltaTime);
 
 
 
-
+		// get projection from window size 
 		glm::mat4 projection = glm::perspective(glm::radians(90.0f), (WindowManager::GetInstance()->getBufferWidth() / (float)WindowManager::GetInstance()->getBufferHeight()), 0.1f, 100.0f);
 		glm::mat4 view = playerCamera->getViewMatrix();
+		//Set uniforms for shaders 
 		ShaderManager::GetInstance()->SetMat4("projection", &projection);
 		ShaderManager::GetInstance()->SetMat4("view", &view);
 
@@ -144,13 +131,13 @@ int main()
 
 		//Draw else
 
-
+		//set texture and shader for world
 		TextureManager::GetInstance()->UseTexture("andesite");
 		ShaderManager::GetInstance()->UseShader("solid");
+		
+		//Draw world
 		WorldManager::GetInstance()->Render();
-
-
-
+		//Draw GUI
 		GUI_Manager::GetInstance()->Render();
 
 
@@ -158,10 +145,6 @@ int main()
 
 	
 
-
-		ShaderManager::GetInstance()->UseShader("line");
-		ShaderManager::GetInstance()->SetMat4("projection", &projection);
-		ShaderManager::GetInstance()->SetMat4("view", &view);
 
 
 		
@@ -173,8 +156,7 @@ int main()
 
 	}
 
-	worldGenThread.join();
-
+	//Cleanup
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		delete meshList[i];

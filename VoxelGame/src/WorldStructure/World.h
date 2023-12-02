@@ -24,7 +24,6 @@ public:
 	void PlayerUpdate(Player *player);
 	void Update(float deltaTime);
 	void Render();
-	void loadChunk();
 	Chunk * GetChunk(glm::vec3 worldPos);
 	Block *GetBlock(glm::vec3 worldPos);
 	void PlaceBlock(glm::vec3 worldPos, Block::BlockType type);

@@ -40,7 +40,6 @@ private:
 public:
 
 
-	InputManager();
 	void Init();
 	void Update();
 	void UpdateKeyStates();

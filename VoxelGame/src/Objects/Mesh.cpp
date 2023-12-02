@@ -1,9 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh()
+Mesh::Mesh() : VAO(0), VBO(0), IBO(0), indexCount(0)
 {
-this->shaderManager = ShaderManager::GetInstance();
-model = glm::mat4(1.0f);
+// initialize shaderManager and model
+	this->shaderManager = ShaderManager::GetInstance();
+	model = glm::mat4(1.0f);
 }
 
 Mesh::~Mesh()
@@ -11,6 +12,7 @@ Mesh::~Mesh()
 	Clear();
 }
 
+// Create a mesh from vertices and indices
 void Mesh::Create(float *vertices, unsigned int *indices, unsigned int numOfVertices, unsigned int numOfIndices)
 {
 	indexCount = numOfIndices;
@@ -48,6 +50,7 @@ void Mesh::Create(float *vertices, unsigned int *indices, unsigned int numOfVert
 	glBindVertexArray(0);
 }
 
+// Render the mesh based on vao and ibo Index Buffer Object
 void Mesh::Render()
 {
 	glBindVertexArray(VAO);
@@ -55,12 +58,9 @@ void Mesh::Render()
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-
-	if(!shaderManager->uniformExists("model"))
-		shaderManager->SetMat4("model",&model);
 }
 
+// Clear the mesh from memory by deleting the buffers
 void Mesh::Clear()
 {
 	if (IBO != 0)
@@ -84,6 +84,7 @@ void Mesh::Clear()
 	indexCount = 0;
 }
 
+// Get the Vertex Array Object
 unsigned int Mesh::GetVAO()
 {
 	return VAO;

@@ -7,6 +7,8 @@
 #include <GLAD/glad.h>
 #include <filesystem>
 
+
+// Singleton instance of ShaderManager
 static ShaderManager *instance = nullptr;
 ShaderManager *ShaderManager::GetInstance()
 {
@@ -15,16 +17,18 @@ ShaderManager *ShaderManager::GetInstance()
 	return instance;
 }
 
-
+// Returns the name of the shader based on the file names
 std::string ShaderManager::getShaderName(std::string vertexFileName, std::string FragmentFileName)
 {
+	//get the name of the shader from the file name
 	std::string shaderNameV = std::string(vertexFileName).substr(0, std::string(vertexFileName).find("."));
 	std::string shaderNameF = std::string(FragmentFileName).substr(0, std::string(FragmentFileName).find("."));
+	//if both shaders are the same then return that name
 	if (shaderNameV == shaderNameF)
 		return shaderNameV;
 	else
 	{
-
+		//if one of the shaders is base or internal>file then return the other name
 		if (shaderNameV == "base" || shaderNameV == "internal>file")
 			return shaderNameF;
 		if (shaderNameF == "base" || shaderNameF == "internal>file")
@@ -35,7 +39,6 @@ std::string ShaderManager::getShaderName(std::string vertexFileName, std::string
 
 ShaderManager::ShaderManager()
 {
-
 	//create base shader from hardcoded strings
 	std::string shaderName = "base";
 	Shader *shader = new Shader();
@@ -117,11 +120,12 @@ void ShaderManager::UseShader(std::string shaderName)
 	}
 	else
 		shaderList["base"]->Use();
-		currentShader = shaderList["base"];
+	currentShader = shaderList["base"];
 	std::cout << "Shader not found: " << shaderName << std::endl;
 
 }
 
+//set uniform matrix
 void ShaderManager::SetMat4(std::string type, glm::mat4 *matrix)
 {
 	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
@@ -132,6 +136,7 @@ void ShaderManager::SetMat4(std::string type, glm::mat4 *matrix)
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(*matrix));
 }
 
+//set uniform vector
 void ShaderManager::SetUniform3(std::string type, glm::vec3 *vector)
 {
 	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
@@ -142,6 +147,7 @@ void ShaderManager::SetUniform3(std::string type, glm::vec3 *vector)
 	glUniform3f(uniformLocation, vector->x, vector->y, vector->z);
 }
 
+//set uniform float
 void ShaderManager::SetUniform1(std::string type, float value)
 {
 	int uniformLocation = glGetUniformLocation(currentShader->GetShaderID(), type.c_str());
@@ -152,11 +158,13 @@ void ShaderManager::SetUniform1(std::string type, float value)
 	glUniform1f(uniformLocation, value);
 }
 
+//check if uniform exists
 bool ShaderManager::uniformExists(std::string uniformName)
 {
 	return glGetUniformLocation(currentShader->GetShaderID(), uniformName.c_str()) < 0;
 }
 
+//delete all shaders
 void ShaderManager::ClearShaderList()
 {
 	//delete all shaders

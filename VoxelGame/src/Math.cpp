@@ -1,10 +1,12 @@
 #include "Math.h"
 
+// gets the distance in a direction
 glm::vec3 Math::GetDirectionDistance(glm::vec3 normalizedDirection, float distance)
 {
 		return normalizedDirection * distance;
 }
 
+// gets the distance to the next block in a direction
 float Math::DistToBlock(glm::vec3 pos, Axis axis, glm::vec3 dir)
 {
 	if (dir[axis] == 0.0f)
@@ -13,11 +15,13 @@ float Math::DistToBlock(glm::vec3 pos, Axis axis, glm::vec3 dir)
 		return DistToBlock(pos, axis, dir[axis] < 0.0f);
 }
 
+// gets the distance to the next block in a direction
 float Math::DistToBlock(glm::vec3 pos, Axis axis, bool negative)
 {
 	return DistToBlock(pos[axis], axis, negative);
 }
 
+// gets the distance to the next block in a direction
 float Math::DistToBlock(float pos, Axis axis, bool negative)
 {
 	float result;
@@ -32,11 +36,13 @@ float Math::DistToBlock(float pos, Axis axis, bool negative)
 	return result;
 }
 
+// converts an axis and direction to a direction enum
 Math::Direction Math::AxisToDir(Axis axis, bool negative)
 {
 	return Math::Direction(axis * 2 + (negative ? 1 : 0));
 }
 
+// converts an axis to a normal vector in that direction 
 glm::vec3 Math::AxisToNormal(Axis axis, bool negative)
 {	
 	switch (axis)

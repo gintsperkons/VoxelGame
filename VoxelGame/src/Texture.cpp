@@ -8,6 +8,7 @@ Texture::Texture(): texture(0), width(0), height(0), nrChannels(0), error(false)
 {
 }
 
+//creates a texture from the image path and sets the name of the texture
 void Texture::Create(std::string imagePath, std::string textureName,int type)
 {   
     name = textureName;
@@ -39,12 +40,14 @@ void Texture::Create(std::string imagePath, std::string textureName,int type)
     stbi_image_free(data);
 }
 
+//sets the texture to the active texture
 void Texture::Use()
 {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
 }
 
+//clears the texture
 void Texture::Clear()
 {
     if (texture!=0)

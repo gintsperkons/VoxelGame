@@ -5,22 +5,20 @@
 
 class BaseElement
 {
-
 protected:
 	std::vector<BaseElement *> allChildren;
 
 	std::string elementName;
 	int type;
 	glm::vec2 location;
+
 	float padding_left;
 	float padding_right;
 	float padding_top;
 	float padding_bottom;
 
-
 	int verticalAlignment;
 	int horizontalAlignment;
-
 	
 public:
 	float space_left = 0;
@@ -30,6 +28,20 @@ public:
 	BaseElement(std::string name, int type);
 	~BaseElement();
 	
+	
+
+	void SetLocation(float x, float y);
+	void SetPositionRelative(float x, float y);//0 - 1 in procentage
+	void GetPadding(float &left, float &right, float &top, float &bottom);
+	void SetPadding(float left, float right, float top, float bottom);
+	virtual void Render() = 0;
+	virtual void Clear() = 0;
+	virtual glm::vec2 GetBoundingBox();
+	BaseElement* GetChild(std::string name);
+	int GetType();
+	std::string GetName();
+
+	//enum for alignment of the element 
 	enum Align
 	{
 		Top = 0,
@@ -40,18 +52,7 @@ public:
 		None = 5
 	};
 
-	void SetLocation(float x, float y);
-	void SetPositionRelative(float x, float y);//0 - 1 in procentage
-	void GetPadding(float &left, float &right, float &top, float &bottom);
-	void SetPadding(float left, float right, float top, float bottom);
-	virtual void Render() = 0;
-	virtual void Clear() = 0;
-	int GetType();
-	virtual glm::vec2 GetBoundingBox();
-	BaseElement* GetChild(std::string name);
-	std::string GetName();
-
-	
+	//enum of different GUI element types
 	enum ElementType
 	{
 		GUI_Manager = 0,

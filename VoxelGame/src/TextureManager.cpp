@@ -19,7 +19,7 @@ TextureManager::TextureManager()
 	//get path to textures folder and create default texture
 	texturePath = std::filesystem::current_path().string() + "\\Textures";
 	currentTexture = nullptr;
-	CreateTexture("default.jpg");
+	CreateTexture("default.png");
 
 	//get all files in shader directory
 	if (FileHandler::IsDirectory(texturePath))
@@ -35,6 +35,7 @@ TextureManager::TextureManager()
 
 }
 
+//creates a texture from a file
 void TextureManager::CreateTexture(std::string fileName)
 {
 	//creates texture and if successful then ad to list
@@ -56,10 +57,7 @@ void TextureManager::CreateTexture(std::string fileName)
 
 }
 
-void TextureManager::SetSkyMapTexture()
-{
-	
-}
+
 
 void TextureManager::UseTexture(std::string textureName)
 {	
@@ -76,6 +74,7 @@ void TextureManager::UseTexture(std::string textureName)
 		currentTexture = textureList[textureName];
 		return;
 	}
+	//if default texture exists then use it
 	if (textureList.find("default") != textureList.end())
 	{
 		textureList["default"]->Use();
@@ -87,6 +86,7 @@ void TextureManager::UseTexture(std::string textureName)
 		
 }
 
+//clears all textures
 void TextureManager::ClearTextureList()
 {
 	//delete all textures

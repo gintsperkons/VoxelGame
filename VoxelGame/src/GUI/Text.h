@@ -11,13 +11,9 @@
 
 #include "BaseElement.h"
 
-class Text: public BaseElement
+class Text : public BaseElement
 {
-	FT_Library  library;
-	FT_Face face;
-	unsigned int VAO, VBO;
-
-
+	// Holds all state information relevant to a character as loaded using FreeType
 	struct Character
 	{
 		unsigned int TextureID;  // ID handle of the glyph texture
@@ -27,35 +23,34 @@ class Text: public BaseElement
 	};
 
 	std::map<char, Character> Characters;
-	glm::mat4 GetProjectionMatrics();
 
-
-
-
-
-	
-
+	FT_Library  library;
+	FT_Face face;
+	unsigned int VAO, VBO; //vertex array object, vertex buffer object
 
 	float scale = 1.0f;
 	glm::vec3 color;
 	std::string text;
 
+	glm::mat4 GetProjectionMatrics();
+
 public:
-	glm::vec2 GetBoundingBox();
 	Text(std::string name);
+	~Text();
+
 	void Init();
 	void Render();
 
+	glm::vec2 GetBoundingBox();
 	void SetText(std::string text);
 	void SetColor(glm::vec3 color);
 	void SetScale(float scale);
 
-	~Text();
 
 
 
 
-	
+
 	void Clear();
 
 };

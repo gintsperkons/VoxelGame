@@ -1,7 +1,7 @@
 #include "WorldManager.h"
-#include <iostream>
 #include "../Player.h"
 
+//Singleton instance of WorldManager class (only one instance of WorldManager can exist)
 static WorldManager *instance;
 WorldManager*WorldManager::GetInstance()
 {
@@ -18,18 +18,21 @@ WorldManager::~WorldManager()
 clear();
 }
 
+//Add player to world with name worldName 
 void WorldManager::AddPlayer(std::string worldName, Player *player)
 {
 	World *world = worlds[worldName];
 	world->AddPlayer(player);
 }
 
+//Create world with name and add it to worlds map
 void WorldManager::CreateWorld(std::string name)
 {
 	World *world = new World();
 	worlds.insert(std::pair<std::string, World*>(name, world));
 }
 
+//Get world with name
 World *WorldManager::GetWorld(std::string name)
 {
 	if(worlds.find(name) != worlds.end())
@@ -37,9 +40,7 @@ World *WorldManager::GetWorld(std::string name)
 	return nullptr;
 }
 
-void WorldManager::UnloadWorld(std::string name)
-{}
-
+//Update all worlds in worlds map with deltaTime 
 void WorldManager::Update(float deltaTime)
 {	
     std::map<std::string, World*>::iterator it;
@@ -49,6 +50,7 @@ void WorldManager::Update(float deltaTime)
     }
 }
 
+//Render all worlds in worlds map 
 void WorldManager::Render()
 {
 	std::map<std::string, World*>::iterator it;
@@ -58,6 +60,7 @@ void WorldManager::Render()
 	}
 }
 
+//Clear worlds map and delete all worlds in it
 void WorldManager::clear()
 {
 	std::map<std::string, World*>::iterator it;

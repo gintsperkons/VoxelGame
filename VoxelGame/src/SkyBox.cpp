@@ -19,7 +19,7 @@ std::vector<std::string> faces
 		"back.png"
 };
 
-// Mesh Setup
+// Mesh Setup 
 unsigned int skyboxIndices[] = {
 	// front
 	0, 1, 2,
@@ -41,6 +41,7 @@ unsigned int skyboxIndices[] = {
 	3, 6, 7
 };
 
+// skybox vertices
 float skyboxVertices[] = {
 	-1.0f, 1.0f, -1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
 	-1.0f, -1.0f, -1.0f,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
@@ -53,17 +54,28 @@ float skyboxVertices[] = {
 	1.0f, -1.0f, 1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f
 };
 
+//singleton instance of skybox 
 static SkyBox* instance = 0;
+SkyBox *SkyBox::GetInstance()
+{
+	if (instance == nullptr)
+		instance = new SkyBox();
+	return instance;
+}
+
+
 SkyBox::SkyBox()
 {
+	//set texture path
 	texturePath = std::filesystem::current_path().string() + "\\Textures";
 }
 void SkyBox::Create()
 {
+	//load texture
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
-
+	//load texture data
     int width, height, nrChannels;
     for (unsigned int i = 0; i < faces.size(); i++)
     {
@@ -78,39 +90,50 @@ void SkyBox::Create()
         else
             stbi_image_free(data);
     }
+	//set texture parameters
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
+	//create mesh for skybox
     skyMesh = new Mesh();
     skyMesh->Create(skyboxVertices, skyboxIndices, 64, 36);
 }
 
+//render skybox with skybox shader 
 void SkyBox::Render(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
 {
+	//remove translation from view matrix to make skybox static
 	viewMatrix = glm::mat4(glm::mat3(viewMatrix));
 	bool faceCullEnabled = glIsEnabled(GL_CULL_FACE);
 	glDepthMask(GL_FALSE);
 	glDisable(GL_CULL_FACE);
 
+	//use skybox shader
 	ShaderManager::GetInstance()->UseShader("skyBox");
 
 
+	//set view and projection matrices
 	ShaderManager::GetInstance()->SetMat4("projection", &projectionMatrix);
 	ShaderManager::GetInstance()->SetMat4("view", &viewMatrix);
 
+	//bind texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
+	//render skybox
 	skyMesh->Render();
 
+	//reset culling and depth mask
 	if (faceCullEnabled)
 		glEnable(GL_CULL_FACE);
 	glDepthMask(GL_TRUE);
 }
 
+
+//delete skybox mesh
 void SkyBox::Clear()
 {
     delete skyMesh;
@@ -120,10 +143,4 @@ void SkyBox::Clear()
 SkyBox::~SkyBox()
 {
     Clear();
-}
-SkyBox *SkyBox::GetInstance()
-{
-	if (instance == nullptr)
-		instance = new SkyBox();
-	return instance;
 }
